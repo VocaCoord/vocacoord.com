@@ -3,6 +3,7 @@ const path = require("path");
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 const mongodb = require("mongodb");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 5000;
 
@@ -25,6 +26,7 @@ if (cluster.isMaster) {
   });
 } else {
   const app = express();
+  app.use(cors());
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -65,17 +67,17 @@ if (cluster.isMaster) {
           process.exit(1);
         }
 
-        let classCodes = classrooms.map(classroom => classroom.classCode);
+        let classIDs = classrooms.map(classroom => classroom.classID);
 
         do {
-          classCode = Math.random()
+          classID = Math.random()
             .toString(36)
             .substring(2, 6)
             .toUpperCase();
-        } while (classCodes.includes(classCode));
+        } while (classIDs.includes(classID));
 
         db.collection(classroomsCollection).insertOne(
-          { classCode },
+          { classID },
           (err, doc) => {
             res.status(201).json(doc.ops[0]);
           }
@@ -83,8 +85,8 @@ if (cluster.isMaster) {
       });
   });
 
-  app.get("/api/join/:classCode", (req, res) => {
-    let { classCode } = req.params;
+  app.get("/api/join/:classID", (req, res) => {
+    let { classID } = req.params;
 
     db.collection(classroomsCollection)
       .find({}, { projection: { _id: 0 } })
@@ -94,9 +96,9 @@ if (cluster.isMaster) {
           process.exit(1);
         }
 
-        let classCodes = classrooms.map(classroom => classroom.classCode);
+        let classIDs = classrooms.map(classroom => classroom.classID);
 
-        if (classCodes.includes(classCode)) {
+        if (classIDs.includes(classID)) {
           console.log("Joined an existing class");
         } else {
           console.log("Class doesn't exist");
@@ -106,12 +108,12 @@ if (cluster.isMaster) {
       });
   });
 
-  app.get("/api/remove/:classCode", (req, res) => {
-    let { classCode } = req.params;
+  app.get("/api/remove/:classID", (req, res) => {
+    let { classID } = req.params;
 
-    if (classCode === 'all') db.collection(classroomsCollection).deleteMany({});
+    if (classID === 'all') db.collection(classroomsCollection).deleteMany({});
 
-    db.collection(classroomsCollection).deleteOne({ classCode });
+    db.collection(classroomsCollection).deleteOne({ classID });
 
     db.collection(classroomsCollection).find({}).toArray((err, docs) => {
       res.status(200).json(docs);
