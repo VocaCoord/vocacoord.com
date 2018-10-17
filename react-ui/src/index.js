@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import VocaCoord from './VocaCoord';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './index.css';
 
 ReactDOM.render(
-  <App />,
+  <VocaCoord />,
   document.getElementById('root')
 );

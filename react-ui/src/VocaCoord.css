@@ -1,0 +1,27 @@
+.App-logo {
+  height: 50px;
+  float: left;
+  transform: translate(0px, -8px);
+}
+
+.App-logo-text {
+  float: left;
+  transform: translate(-25px, 0px);
+}
+
+.App-header {
+  background-color: #222;
+  height: 80px;
+  padding: 20px;
+  color: white;
+}
+
+.App-login-buttons {
+  float: right;
+}
+
+.App-slide {
+  transform: translate(0px, -150px);
+  z-index: -1;
+  position: absolute;
+}
