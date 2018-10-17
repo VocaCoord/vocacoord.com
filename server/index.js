@@ -4,6 +4,7 @@ const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 const mongodb = require("mongodb");
 const cors = require("cors");
+const enforce = require('express-sslify');
 
 const PORT = process.env.PORT || 5000;
 
@@ -27,6 +28,7 @@ if (cluster.isMaster) {
 } else {
   const app = express();
   app.use(cors());
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -108,12 +110,15 @@ if (cluster.isMaster) {
       });
   });
 
+  /* this is not secure */
   app.get("/api/remove/:classID", (req, res) => {
     let { classID } = req.params;
 
-    if (classID === 'all') db.collection(classroomsCollection).deleteMany({});
-
-    db.collection(classroomsCollection).deleteOne({ classID });
+    if (classID === 'all') {
+      db.collection(classroomsCollection).deleteMany({});
+    } else {
+      db.collection(classroomsCollection).deleteOne({ classID });
+    }
 
     db.collection(classroomsCollection).find({}).toArray((err, docs) => {
       res.status(200).json(docs);
