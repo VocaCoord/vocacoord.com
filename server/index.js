@@ -1,34 +1,30 @@
 const express = require("express");
 const path = require("path");
-const cluster = require("cluster");
-const numCPUs = require("os").cpus().length;
+const workers = require("os").cpus().length;
 const mongodb = require("mongodb");
 const cors = require("cors");
 const enforce = require('express-sslify');
 
-const PORT = process.env.PORT || 5000;
+const port = process.env.PORT || 5000;
 
-const classroomsCollection = "classrooms";
-var db;
+const ClusterWS = require('clusterws');
 
-// Multi-process to utilize all CPU cores.
-if (cluster.isMaster) {
-  console.error(`Node cluster master ${process.pid} is running`);
+const clusterws = new ClusterWS({
+  port,
+  worker,
+  workers,
+  restartWorkerOnFail: true
+});
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+function worker() {
+  const wss = this.wss;
+  const server = this.server;
+  const classroomsCollection = "classrooms";
+  let db;
 
-  cluster.on("exit", (worker, code, signal) => {
-    console.error(
-      `Node cluster worker ${worker.process.pid} exited: code ${code}, signal ${signal}`
-    );
-  });
-} else {
   const app = express();
-  app.use(cors());
-  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+  app.use(enforce.HTTPS({ trustProtoHeader: true }))
+  app.use(cors());;
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -132,9 +128,10 @@ if (cluster.isMaster) {
     );
   });
 
-  app.listen(PORT, () => {
-    console.error(
-      `Node cluster worker ${process.pid}: listening on port ${PORT}`
-    );
+  server.on('request', app);
+
+  wss.on('connection', (socket, req) => {
+    console.log(`connection to  ${process.pid} with socket ${socket} and request ${req}`);
   });
+  
 }
