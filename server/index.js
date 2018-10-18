@@ -23,8 +23,9 @@ function worker() {
   let db;
 
   const app = express();
-  app.use(enforce.HTTPS({ trustProtoHeader: true }))
-  app.use(cors());;
+  /* comment this out while testing on localhost */
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+  app.use(cors());
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -130,6 +131,7 @@ function worker() {
 
   server.on('request', app);
 
+  /* this needs to only happen on certain endpoints */
   wss.on('connection', (socket, req) => {
     console.log(`connection to  ${process.pid} with socket ${socket} and request ${req}`);
   });
