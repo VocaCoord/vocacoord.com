@@ -4,6 +4,7 @@ const workers = require("os").cpus().length;
 const mongodb = require("mongodb");
 const cors = require("cors");
 const enforce = require('express-sslify');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 5000;
 
@@ -20,12 +21,14 @@ function worker() {
   const wss = this.wss;
   const server = this.server;
   const classroomsCollection = "classrooms";
+  const usersCollection = "users";
   let db;
 
   const app = express();
   /* comment this out while testing on localhost */
-  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+  //app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
+  app.use(bodyParser.json());
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -51,6 +54,14 @@ function worker() {
 
   app.get("/api/classrooms", (req, res) => {
     db.collection(classroomsCollection)
+      .find({})
+      .toArray((err, docs) => {
+        res.status(200).json(docs);
+      });
+  });
+
+  app.get("/api/users", (req, res) => {
+    db.collection(usersCollection)
       .find({})
       .toArray((err, docs) => {
         res.status(200).json(docs);
@@ -117,10 +128,33 @@ function worker() {
       db.collection(classroomsCollection).deleteOne({ classID });
     }
 
+    if (classID === 'users') db.collection(usersCollection).deleteMany({});
+
     db.collection(classroomsCollection).find({}).toArray((err, docs) => {
       res.status(200).json(docs);
     });
   });
+
+  app.post("/api/login", (req, res) => {
+    const { email, password } = req.body;
+    db.collection(usersCollection).findOne({ email }, (err, doc) => {
+      if (!doc) return res.sendStatus(400);
+      if (doc.password !== password) return res.sendStatus(400);
+      res.sendStatus(200);
+    });
+  });
+
+  app.post("/api/signup", (req, res) => {
+    console.log(req.body)
+    const { firstName, lastName, email, password } = req.body;
+    db.collection(usersCollection).findOne({ email }, (err, doc) => {
+      if (doc) return res.sendStatus(400);
+      db.collection(usersCollection).insertOne({ firstName, lastName, email, password }, (err, doc) => {
+        res.sendStatus(200);
+      });
+    });
+  });
+
 
   // All remaining requests return the React app, so it can handle routing.
   app.get("*", (request, response) => {
