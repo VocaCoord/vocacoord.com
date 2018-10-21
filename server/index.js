@@ -25,8 +25,7 @@ function worker() {
   let db;
 
   const app = express();
-  /* comment this out while testing on localhost */
-  //app.use(enforce.HTTPS({ trustProtoHeader: true }));
+  if ('HEROKU' in process.env || ('DYNO' in process.env && process.env.HOME === '/app')) app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
   app.use(bodyParser.json());
 
