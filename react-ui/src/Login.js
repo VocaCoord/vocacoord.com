@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
 import slide from "./VCLogin.svg";
 import "./VocaCoord.css";
-import apiURL from './Constants.js';
+import { apiURL } from './Constants.js';
 
 export default class Login extends Component {
   constructor(props) {
