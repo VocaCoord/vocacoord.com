@@ -9,8 +9,10 @@ import Lost from './Lost.js';
 import { WordBanks, WordBank } from './WordBanks.js';
 import PrivateRoute from './PrivateRoute.js';
 import './VocaCoord.css';
+import { connect } from 'react-redux';
+import PropTypes from "prop-types";
 
-export default class Routing extends Component {
+export class Routing extends Component {
   render() {
     return (
       <Router>
@@ -20,9 +22,9 @@ export default class Routing extends Component {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
-            <PrivateRoute exact path="/classrooms" component={Classrooms} />
-            <PrivateRoute exact path="/classrooms/:classroom/wordbanks" component={WordBanks} />
-            <PrivateRoute exact path="/classrooms/:classroom/wordbanks/words" component={WordBank} />
+            <PrivateRoute exact path="/classrooms" component={Classrooms} authenticated={true}/>
+            <PrivateRoute exact path="/classrooms/:classroom/wordbanks" component={WordBanks} authenticated={true}/>
+            <PrivateRoute exact path="/classrooms/:classroom/wordbanks/words" component={WordBank} authenticated={true}/>
             <Route component={Lost} />
           </Switch>
         </div>
@@ -30,3 +32,17 @@ export default class Routing extends Component {
     )
   }
 }
+
+const { bool } = PropTypes;
+
+Routing.propTypes = {
+  authenticated: bool.isRequired,
+  checked: bool.isRequired
+}
+
+const mapState = ({ session }) => ({
+  checked: session.checked,
+  authenticated: session.authenticated
+});
+
+export default connect(mapState)(Routing);

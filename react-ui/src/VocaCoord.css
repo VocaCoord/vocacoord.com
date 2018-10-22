@@ -33,3 +33,9 @@
   max-width: 340px;
   min-width: 340px;
 }
+
+.App-lost-button {
+  transform: translate(175px, 360px);
+  max-width: 555px;
+  min-width: 555px;
+}

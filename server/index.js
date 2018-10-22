@@ -28,6 +28,15 @@ function worker() {
   if ('HEROKU' in process.env || ('DYNO' in process.env && process.env.HOME === '/app')) app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
   app.use(bodyParser.json());
+  app.use((req, res) => {
+    const reducer = combineReducers({
+      session: sessionReducer
+    });
+
+    const store = createStore(reducer);
+
+    sessionService.initServerSession(store, req);
+  });
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
@@ -135,6 +144,7 @@ function worker() {
   });
 
   app.post("/api/login", (req, res) => {
+    console.log('login', req.body)
     const { email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
       if (!doc) return res.sendStatus(400);
@@ -144,7 +154,7 @@ function worker() {
   });
 
   app.post("/api/signup", (req, res) => {
-    console.log(req.body)
+    console.log('signup', req.body)
     const { firstName, lastName, email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
       if (doc) return res.sendStatus(400);

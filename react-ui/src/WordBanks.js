@@ -3,7 +3,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
-import { Link } from 'react-router-dom'
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/core/Icon';
+import { Link } from 'react-router-dom';
 
 
 export class WordBanks extends Component {
@@ -58,10 +60,12 @@ export class WordBank extends Component {
         {this.state.wordbank.words.length ? (
           this.state.wordbank.words.map((word, i) => {
             return (
-              <ListItem>
+              <ListItem key={i}>
                 <ListItemText primary={word} />
                 <ListItemSecondaryAction>
-
+                  <IconButton>
+                    <DeleteIcon />
+                  </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
             )

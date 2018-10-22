@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
 import slide from "./VCLogin.svg";
 import "./VocaCoord.css";
-import { apiURL } from './Constants.js';
+import { apiURL } from "./Constants.js";
+import { sessionService } from "redux-react-session";
 
 export default class Login extends Component {
   constructor(props) {
@@ -64,9 +65,13 @@ export default class Login extends Component {
           }
         ];
         if (res.status === 200) {
-          this.props.history.push({
-            pathname: "/classrooms",
-            state: { classrooms }
+          sessionService.saveSession({ token: "a1b2c3d4" }).then(() => {
+            sessionService.saveUser({ email }).then(() => {
+              this.props.history.push({
+                pathname: "/classrooms",
+                state: { classrooms }
+              });
+            });
           });
         } else if (res.status === 400) {
           alert("Your login was bad");
