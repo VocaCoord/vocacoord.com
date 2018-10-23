@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 
 export class Routing extends Component {
   render() {
-    const { authenticated } = {authenticated: true};//this.props;
+    const { authenticated } = this.props;
     return (
       <Router>
         <div className="App">

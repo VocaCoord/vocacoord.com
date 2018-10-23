@@ -28,7 +28,7 @@ function worker() {
   if ('HEROKU' in process.env || ('DYNO' in process.env && process.env.HOME === '/app')) app.use(enforce.HTTPS({ trustProtoHeader: true }));
   app.use(cors());
   app.use(bodyParser.json());
-  app.use((req, res) => {
+  /*app.use((req, res) => {
     const reducer = combineReducers({
       session: sessionReducer
     });
@@ -36,7 +36,7 @@ function worker() {
     const store = createStore(reducer);
 
     sessionService.initServerSession(store, req);
-  });
+  });*/
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",

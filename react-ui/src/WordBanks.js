@@ -1,19 +1,22 @@
 import React, { Component } from "react";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
-import Button from "@material-ui/core/Button";
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import { Link } from "react-router-dom";
 
 export class WordBanks extends Component {
@@ -23,8 +26,9 @@ export class WordBanks extends Component {
     this.state = {
       wordbanks,
       editingDialog: false,
-      oldName: '',
-      newName: ''
+      addingDialog: false,
+      oldName: "",
+      newName: ""
     };
   }
 
@@ -35,49 +39,48 @@ export class WordBanks extends Component {
     this.setState({ wordbanks });
   }
 
-  handleAddWordBank(name) {
+  handleAddWordBank() {
+    const { newName } = this.state;
     const date = new Date();
     const createdAt = `Created on ${date.getDate()}/${date.getMonth() +
       1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
     const wordbank = {
       id: 0,
-      name,
+      name: newName,
       createdAt,
       words: []
-    }
+    };
     const wordbanks = [...this.state.wordbanks, wordbank];
-    this.setState({ wordbanks });
-  }
-
-  handleOpenDialog(name) {
-    this.setState({ editingDialog: true, oldName: name });
-  }
-
-  handleCloseDialog() {
-    this.setState({ editingDialog: false, oldName: '', newName: '' });
+    this.setState({ wordbanks, addingDialog: false, newName: "" });
   }
 
   handleSubmitDialog() {
     const { oldName, newName } = this.state;
     const wordbanks = [...this.state.wordbanks];
-    wordbanks.forEach(wordbank => { if (wordbank.name === oldName) wordbank.name = newName });
-    this.setState({ wordbanks });
-    this.handleCloseDialog();
+    wordbanks.forEach(wordbank => {
+      if (wordbank.name === oldName) wordbank.name = newName;
+    });
+    this.setState({
+      wordbanks,
+      editingDialog: false,
+      oldName: "",
+      newName: ""
+    });
   }
 
   render() {
     return (
       <div>
         <Dialog
-          open={this.state.editingDialog}
-          onClose={() => this.handleCloseDialog()}
-          aria-labelledby="form-dialog-title"
+          open={this.state.addingDialog}
+          onClose={() => this.setState({ addingDialog: false, newName: "" })}
+          aria-labelledby="form-adding-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">Word Bank Name</DialogTitle>
+          <DialogTitle id="form-adding-dialog-title">
+            Word Bank Name
+          </DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Edit the word bank's name
-            </DialogContentText>
+            <DialogContentText>Add the word bank's name</DialogContentText>
             <TextField
               autoFocus
               margin="dense"
@@ -88,7 +91,51 @@ export class WordBanks extends Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleCloseDialog()} color="primary">
+            <Button
+              onClick={() =>
+                this.setState({ addingDialog: false, newName: "" })
+              }
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => this.handleAddWordBank()} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.editingDialog}
+          onClose={() =>
+            this.setState({ editingDialog: false, oldName: "", newName: "" })
+          }
+          aria-labelledby="form-editing-dialog-title"
+        >
+          <DialogTitle id="form-editing-dialog-title">
+            Word Bank Name
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>Edit the word bank's name</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Word Bank Name"
+              fullWidth
+              onChange={e => this.setState({ newName: e.target.value })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.setState({
+                  editingDialog: false,
+                  oldName: "",
+                  newName: ""
+                })
+              }
+              color="primary"
+            >
               Cancel
             </Button>
             <Button onClick={() => this.handleSubmitDialog()} color="primary">
@@ -111,7 +158,12 @@ export class WordBanks extends Component {
                   </Link>
                   <ListItemSecondaryAction>
                     <IconButton
-                      onClick={() => this.handleOpenDialog(wordbank.name)}
+                      onClick={() =>
+                        this.setState({
+                          editingDialog: true,
+                          oldName: wordbank.name
+                        })
+                      }
                     >
                       <EditIcon />
                     </IconButton>
@@ -138,8 +190,18 @@ export class WordBanks extends Component {
           color="primary"
           aria-label="Add"
           style={{ position: "absolute", right: 10, bottom: 10 }}
+          onClick={() => this.setState({ addingDialog: true })}
         >
           <AddIcon />
+        </Button>
+        <Button
+          variant="fab"
+          color="primary"
+          aria-label="Back"
+          style={{ position: "absolute", left: 10, bottom: 10 }}
+          onClick={() => this.props.history.goBack()}
+        >
+          <ArrowBackIcon />
         </Button>
       </div>
     );
@@ -149,26 +211,139 @@ export class WordBanks extends Component {
 export class WordBank extends Component {
   constructor(props) {
     super(props);
-    const { wordbank } = props.location.state;
+    const { words } = props.location.state.wordbank;
     this.state = {
-      wordbank
+      words,
+      oldWord: "",
+      newWord: "",
+      addingDialog: false,
+      editingDialog: false
     };
+  }
+
+  handleRemoveWord(newWord) {
+    const words = [...this.state.words].filter(word => word !== newWord);
+    this.setState({ words });
+  }
+
+  handleAddWord() {
+    const { newWord } = this.state;
+    const words = [...this.state.words, newWord];
+    this.setState({ words, addingDialog: false, newWord: "" });
+  }
+
+  handleChangeWord() {
+    const { newWord, oldWord } = this.state;
+    const words = [...this.state.words];
+    words.forEach((word, i) => {
+      if (word === oldWord) words[i] = newWord;
+    });
+    this.setState({ words, editingDialog: false, newWord: "", oldWord: "" });
+  }
+
+  handleSubmitDialog() {
+    const { oldWord, newWord } = this.state;
+    const words = [...this.state.words];
+    words.forEach(word => {
+      if (word === oldWord) word = newWord;
+    });
+    this.setState({
+      words,
+      editingDialog: false,
+      oldWord: "",
+      newWord: ""
+    });
   }
 
   render() {
     return (
       <div>
-        {this.state.wordbank.words.length ? (
+        <Dialog
+          open={this.state.addingDialog}
+          onClose={() => this.setState({ addingDialog: false, newWord: "" })}
+          aria-labelledby="form-adding-dialog-title"
+        >
+          <DialogTitle id="form-adding-dialog-title">Word</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Add the word</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Word"
+              fullWidth
+              onChange={e => this.setState({ newWord: e.target.value })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.setState({ addingDialog: false, newWord: "" })
+              }
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => this.handleAddWord()} color="primary">
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.editingDialog}
+          onClose={() =>
+            this.setState({ editingDialog: false, oldWord: "", newWord: "" })
+          }
+          aria-labelledby="form-editing-dialog-title"
+        >
+          <DialogTitle id="form-editing-dialog-title">Word</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Change the word</DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Word"
+              fullWidth
+              onChange={e => this.setState({ newWord: e.target.value })}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.setState({
+                  editingDialog: false,
+                  oldWord: "",
+                  newWord: ""
+                })
+              }
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => this.handleChangeWord()} color="primary">
+              Change
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {this.state.words.length ? (
           <List>
-            {this.state.wordbank.words.map((word, i) => {
+            {this.state.words.map((word, i) => {
               return (
-                <ListItem key={i}>
+                <ListItem button key={i}>
                   <ListItemText primary={word} />
                   <ListItemSecondaryAction>
-                    <IconButton>
+                    <IconButton
+                      onClick={() =>
+                        this.setState({
+                          editingDialog: true,
+                          oldWord: word
+                        })
+                      }
+                    >
                       <EditIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => this.handleRemoveWord(word)}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -183,6 +358,24 @@ export class WordBank extends Component {
             click the add button to start adding words
           </p>
         )}
+        <Button
+          variant="fab"
+          color="primary"
+          aria-label="Back"
+          style={{ position: "absolute", left: 10, bottom: 10 }}
+          onClick={() => this.props.history.goBack()}
+        >
+          <ArrowBackIcon />
+        </Button>
+        <Button
+          variant="fab"
+          color="primary"
+          aria-label="Add"
+          style={{ position: "absolute", right: 10, bottom: 10 }}
+          onClick={() => this.setState({ addingDialog: true })}
+        >
+          <AddIcon />
+        </Button>
       </div>
     );
   }
