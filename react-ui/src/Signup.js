@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button } from "reactstrap";
-import slide from './VCSignup.svg';
+import slide from './assets/VCSignup.svg';
 import './VocaCoord.css';
 
 export default class Signup extends Component {

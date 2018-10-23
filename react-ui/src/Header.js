@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "./VCLogo.png";
+import logo from "./assets/VCLogo.png";
 import { Button } from "reactstrap";
 import "./VocaCoord.css";
 import { Link } from "react-router-dom";

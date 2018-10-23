@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import slide from './VCSlide.svg';
+import slide from './assets/VCSlide.svg';
 import './VocaCoord.css';
 
 export default class Homepage extends Component {

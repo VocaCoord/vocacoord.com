@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
-import slide from "./VCLogin.svg";
+import slide from "./assets/VCLogin.svg";
 import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
 import { sessionService } from "redux-react-session";
