@@ -4,17 +4,21 @@ import slide from "./VCLogin.svg";
 import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
 import { sessionService } from "redux-react-session";
+import { PulseLoader } from "react-spinners";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      loggingIn: false
     };
   }
 
   authenticateUser() {
+    this.setState({ loggingIn: true });
+
     const { email, password } = this.state;
 
     fetch(apiURL + "login", {
@@ -74,10 +78,15 @@ export default class Login extends Component {
             });
           });
         } else if (res.status === 400) {
-          alert("Your login was bad");
+          console.log("Your login was bad");
+          setTimeout(() => this.setState({ loggingIn: false }), 3000);
         }
       })
       .catch(err => console.log(err));
+  }
+
+  componentWillUnmount() {
+    this.setState({ loggingIn: false });
   }
 
   render() {
@@ -101,9 +110,19 @@ export default class Login extends Component {
             value={this.state.password}
             onInput={e => this.setState({ password: e.target.value })}
           />
-          <Button block color="primary" onClick={() => this.authenticateUser()}>
-            Log In
-          </Button>
+          {this.state.loggingIn ? (
+            <div className="App-spinner">
+              <PulseLoader color={"blue"} />
+            </div>
+          ) : (
+            <Button
+              block
+              color="primary"
+              onClick={() => this.authenticateUser()}
+            >
+              Log In
+            </Button>
+          )}
         </div>
       </div>
     );

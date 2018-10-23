@@ -14,17 +14,18 @@ import PropTypes from "prop-types";
 
 export class Routing extends Component {
   render() {
+    const { authenticated } = {authenticated: true};//this.props;
     return (
       <Router>
         <div className="App">
-          <Header />
+          <Header authenticated={authenticated} />
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
-            <PrivateRoute exact path="/classrooms" component={Classrooms} authenticated={true}/>
-            <PrivateRoute exact path="/classrooms/:classroom/wordbanks" component={WordBanks} authenticated={true}/>
-            <PrivateRoute exact path="/classrooms/:classroom/wordbanks/words" component={WordBank} authenticated={true}/>
+            <PrivateRoute exact path="/classrooms" component={Classrooms} authenticated={authenticated}/>
+            <PrivateRoute exact path="/classrooms/:classroom/wordbanks" component={WordBanks} authenticated={authenticated}/>
+            <PrivateRoute exact path="/classrooms/:classroom/wordbanks/words" component={WordBank} authenticated={authenticated}/>
             <Route component={Lost} />
           </Switch>
         </div>
