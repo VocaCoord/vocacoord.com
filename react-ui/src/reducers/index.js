@@ -1,6 +1,4 @@
-import { combineReducers } from "redux";
 import merge from "lodash/merge";
-import { denormalize, schema } from "normalizr";
 import dotProp from "dot-prop-immutable";
 
 const initialState = {
@@ -15,35 +13,50 @@ export function userDataReducer(state = initialState, action) {
   switch (action.type) {
     /* works */
     case "LOAD_USER": {
-      const user = merge(
-        {},
-        { [id]: { ...action.payload } },
-        { [id]: { id, classrooms: [] } }
-      );
+      let { email } = action.payload;
+      email = email.replace(/\./g, "");
+      const user = merge({}, { ...action.payload }, { id, classrooms: [] });
       return merge({}, state, { user });
     }
 
+    /* works, but there is a race condition */
     case "ADD_CLASS": {
-
+      const { id } = action.payload;
+      const classroom = merge(
+        {},
+        { ...action.payload },
+        { id, wordbanks: [] }
+      );
+      const newUserState = dotProp.merge(state, "user.classrooms", [id]);
+      const newClassState = dotProp.set(
+        newUserState,
+        `classrooms.${id}`,
+        classroom
+      );
+      return newClassState;
     }
 
+    /* TODO */
     case "DEL_CLASS": {
-
     }
 
+    /* TODO */
     case "EDIT_CLASS": {
-
     }
 
     /* works */
     case "ADD_BANK": {
+      const { classID } = action.payload;
       const wordbank = merge(
         {},
-        { [id]: { ...action.payload } },
-        { [id]: { id, words: ["test"] } }
+        { ...action.payload },
+        { id }
       );
-      const wordbanks = merge({}, state.wordbanks, wordbank);
-      return merge({}, state, { wordbanks });
+
+      const newClassState = dotProp.merge(state, `classrooms.${classID}.wordbanks`, [id]);
+      const newWordBankState = dotProp.set(newClassState, `wordbanks.${id}`, wordbank);
+      console.log('new bank state', newWordBankState)
+      return newWordBankState;
     }
     /* works */
     case "DEL_BANK": {
@@ -62,7 +75,10 @@ export function userDataReducer(state = initialState, action) {
         state,
         `wordbanks.${action.payload.id}.words`
       );
-      return dotProp.set(state, `wordbanks.${action.payload.id}.words`, [...oldWords, action.payload.word]);
+      return dotProp.set(state, `wordbanks.${action.payload.id}.words`, [
+        ...oldWords,
+        action.payload.word
+      ]);
     }
     /* works */
     case "DEL_WORD": {
@@ -98,7 +114,6 @@ export function userDataReducer(state = initialState, action) {
 /*
 const entities = {
   user: {
-    "a@gmail.com": {
       id: 1,
       firstName: "test",
       lastName: "ing",
@@ -108,12 +123,12 @@ const entities = {
     }
   },
   classrooms: {
-    "class": {
+    "AAAA": {
       id: "AAAA",
       author: "a@gmail.com",
       wordbanks: ["BBBB"]
     },
-    "a@gmail.com": {
+    "BBBB": {
       id: "BBBB",
       author: "b@gmail.com",
       wordbanks: ["BBBB"]

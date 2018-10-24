@@ -6,25 +6,14 @@ import Login from "./Login.js";
 import Signup from "./Signup.js";
 import Classrooms from "./Classrooms.js";
 import Lost from "./Lost.js";
-import { WordBanks, WordBank } from "./WordBanks.js";
+import WordBanks from "./WordBanks.js";
+import WordBank from "./WordBank.js";
 import PrivateRoute from "./PrivateRoute.js";
 import "./VocaCoord.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 export class Routing extends Component {
-  constructor(props) {
-    super(props);
-    let id = 4;
-
-    this.props.dispatch({
-      type: "ADD_BANK",
-      payload: {
-        name: "test bank"
-      }
-    });
-  }
-
   render() {
     const { authenticated } = this.props;
     return (

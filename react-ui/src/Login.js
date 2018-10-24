@@ -5,8 +5,10 @@ import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
 import { sessionService } from "redux-react-session";
 import { PulseLoader } from "react-spinners";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,6 +79,16 @@ export default class Login extends Component {
               });
             });
           });
+          this.props.dispatch({
+            type: "LOAD_USER",
+            payload: {
+              firstName: "test",
+              lastName: "ing",
+              email,
+              password
+            }
+          });
+          this.props.dispatch({type:"SHOW_STORE"})
         } else if (res.status === 400) {
           console.log("Your login was bad");
           setTimeout(() => this.setState({ loggingIn: false }), 3000);
@@ -128,3 +140,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default withRouter(connect()(Login))
