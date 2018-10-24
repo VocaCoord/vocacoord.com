@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom'
 export default class Classrooms extends Component {
   constructor(props) {
     super(props);
-    const { classrooms } = props.location.state;
     this.state = {
-      classrooms
+      classrooms: [{
+        className: 'testing'
+      }]
     }
   }
   
@@ -20,10 +21,7 @@ export default class Classrooms extends Component {
             return (
               <Link
                 key={i}
-                to={{
-                  pathname: `/classrooms/${classroom.className.replace(/\s/g, '-')}/wordbanks`,
-                  state: { wordbanks: classroom.wordbanks }
-                }}
+                to={`/classrooms/${classroom.className.replace(/\s/g, '-')}/wordbanks`}
               >
                 <ListItem button>
                   <ListItemText primary={classroom.className} />
@@ -33,7 +31,7 @@ export default class Classrooms extends Component {
           })
         ) : (
           <p>It looks like you don't have any classrooms added yet,{'\n'}
-            click the add button to start adding classrooms</p>
+            create one on the app to get started</p>
         )}
       </div>
     )

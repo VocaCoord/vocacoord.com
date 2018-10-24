@@ -22,9 +22,8 @@ import { Link } from "react-router-dom";
 export class WordBanks extends Component {
   constructor(props) {
     super(props);
-    const { wordbanks } = props.location.state;
     this.state = {
-      wordbanks,
+      wordbanks: [],
       editingDialog: false,
       addingDialog: false,
       oldName: "",
