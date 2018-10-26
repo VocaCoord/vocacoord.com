@@ -1,5 +1,7 @@
 import merge from "lodash/merge";
 import dotProp from "dot-prop-immutable";
+import { combineReducers } from "redux";
+import { sessionReducer } from "redux-react-session";
 
 const initialState = {
   user: {},
@@ -8,7 +10,7 @@ const initialState = {
 };
 
 let id = 0;
-export function userDataReducer(state = initialState, action) {
+function userDataReducer(state = initialState, action) {
   id++;
   switch (action.type) {
     /* works */
@@ -22,11 +24,7 @@ export function userDataReducer(state = initialState, action) {
     /* works, but there is a race condition */
     case "ADD_CLASS": {
       const { id } = action.payload;
-      const classroom = merge(
-        {},
-        { ...action.payload },
-        { id, wordbanks: [] }
-      );
+      const classroom = merge({}, { ...action.payload }, { id, wordbanks: [] });
       const newUserState = dotProp.merge(state, "user.classrooms", [id]);
       const newClassState = dotProp.set(
         newUserState,
@@ -38,24 +36,30 @@ export function userDataReducer(state = initialState, action) {
 
     /* TODO */
     case "DEL_CLASS": {
+      return;
     }
 
     /* TODO */
     case "EDIT_CLASS": {
+      return;
     }
 
     /* works */
     case "ADD_BANK": {
       const { classID } = action.payload;
-      const wordbank = merge(
-        {},
-        { ...action.payload },
-        { id }
-      );
+      const wordbank = merge({}, { ...action.payload }, { id });
 
-      const newClassState = dotProp.merge(state, `classrooms.${classID}.wordbanks`, [id]);
-      const newWordBankState = dotProp.set(newClassState, `wordbanks.${id}`, wordbank);
-      console.log('new bank state', newWordBankState)
+      const newClassState = dotProp.merge(
+        state,
+        `classrooms.${classID}.wordbanks`,
+        [id]
+      );
+      const newWordBankState = dotProp.set(
+        newClassState,
+        `wordbanks.${id}`,
+        wordbank
+      );
+      console.log("new bank state", newWordBankState);
       return newWordBankState;
     }
     /* works */
@@ -151,3 +155,10 @@ const mySchema = { user: user };
 const denormalizedData = denormalize({ user: "a@gmail.com"}, mySchema, entities);
 console.log(denormalizedData)
 */
+
+const rootReducer = combineReducers({
+  session: sessionReducer,
+  userData: userDataReducer
+});
+
+export default rootReducer;
