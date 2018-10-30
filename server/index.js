@@ -3,12 +3,14 @@ const path = require("path");
 const workers = require("os").cpus().length;
 const mongodb = require("mongodb");
 const cors = require("cors");
-const enforce = require('express-sslify');
-const bodyParser = require('body-parser');
+const enforce = require("express-sslify");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
 
 const port = process.env.PORT || 5000;
 
-const ClusterWS = require('clusterws');
+const ClusterWS = require("clusterws");
 
 const clusterws = new ClusterWS({
   port,
@@ -25,7 +27,14 @@ function worker() {
   let db;
 
   const app = express();
-  if ('HEROKU' in process.env || ('DYNO' in process.env && process.env.HOME === '/app')) app.use(enforce.HTTPS({ trustProtoHeader: true }));
+  if (
+    "HEROKU" in process.env ||
+    ("DYNO" in process.env && process.env.HOME === "/app")
+  )
+    app.use(enforce.HTTPS({ trustProtoHeader: true }));
+
+  app.use(helmet());
+  app.use(morgan("combined"));
   app.use(cors());
   app.use(bodyParser.json());
   /*app.use((req, res) => {
@@ -130,21 +139,23 @@ function worker() {
   app.get("/api/remove/:classID", (req, res) => {
     let { classID } = req.params;
 
-    if (classID === 'all') {
+    if (classID === "all") {
       db.collection(classroomsCollection).deleteMany({});
     } else {
       db.collection(classroomsCollection).deleteOne({ classID });
     }
 
-    if (classID === 'users') db.collection(usersCollection).deleteMany({});
+    if (classID === "users") db.collection(usersCollection).deleteMany({});
 
-    db.collection(classroomsCollection).find({}).toArray((err, docs) => {
-      res.status(200).json(docs);
-    });
+    db.collection(classroomsCollection)
+      .find({})
+      .toArray((err, docs) => {
+        res.status(200).json(docs);
+      });
   });
 
   app.post("/api/login", (req, res) => {
-    console.log('login', req.body)
+    console.log("login", req.body);
     const { email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
       if (!doc) return res.sendStatus(400);
@@ -154,16 +165,18 @@ function worker() {
   });
 
   app.post("/api/signup", (req, res) => {
-    console.log('signup', req.body)
+    console.log("signup", req.body);
     const { firstName, lastName, email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
       if (doc) return res.sendStatus(400);
-      db.collection(usersCollection).insertOne({ firstName, lastName, email, password }, (err, doc) => {
-        res.sendStatus(200);
-      });
+      db.collection(usersCollection).insertOne(
+        { firstName, lastName, email, password },
+        (err, doc) => {
+          res.sendStatus(200);
+        }
+      );
     });
   });
-
 
   // All remaining requests return the React app, so it can handle routing.
   app.get("*", (request, response) => {
@@ -172,11 +185,12 @@ function worker() {
     );
   });
 
-  server.on('request', app);
+  server.on("request", app);
 
   /* this needs to only happen on certain endpoints */
-  wss.on('connection', (socket, req) => {
-    console.log(`connection to  ${process.pid} with socket ${socket} and request ${req}`);
+  wss.on("connection", (socket, req) => {
+    console.log(
+      `connection to  ${process.pid} with socket ${socket} and request ${req}`
+    );
   });
-  
 }

@@ -1,1 +1,1 @@
-export const apiURL = "https://temp-vocacoord.herokuapp.com/api/";
+export const apiURL = (process.env === "production") ? "https://temp-vocacoord.herokuapp.com/api/" : "/api/";
