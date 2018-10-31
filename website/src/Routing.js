@@ -10,12 +10,10 @@ import WordBanks from "./WordBanks.js";
 import WordBank from "./WordBank.js";
 import PrivateRoute from "./PrivateRoute.js";
 import "./VocaCoord.css";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
-export class Routing extends Component {
+class Routing extends Component {
   render() {
-    const { authenticated } = this.props;
+    const authenticated = true;
     return (
       <Router>
         <div className="App">
@@ -50,16 +48,4 @@ export class Routing extends Component {
   }
 }
 
-const { bool } = PropTypes;
-
-Routing.propTypes = {
-  authenticated: bool.isRequired,
-  checked: bool.isRequired
-};
-
-const mapState = ({ session }) => ({
-  checked: session.checked,
-  authenticated: session.authenticated
-});
-
-export default connect(mapState)(Routing);
+export default Routing

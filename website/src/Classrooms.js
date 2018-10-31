@@ -49,7 +49,9 @@ class Classrooms extends Component {
   }
 
   render() {
-    const { user, classrooms } = this.props;
+    let { user, classrooms } = this.props;
+    user.classrooms = user.classrooms || [];
+    classrooms = classrooms || {};
     const classList = [...user.classrooms.map((classID, i) => {
       return classrooms[classID];
     })]
