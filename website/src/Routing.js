@@ -13,7 +13,7 @@ import "./VocaCoord.css";
 
 class Routing extends Component {
   render() {
-    const authenticated = true;
+    const authenticated = false;
     return (
       <Router>
         <div className="App">
@@ -48,4 +48,4 @@ class Routing extends Component {
   }
 }
 
-export default Routing
+export default Routing;

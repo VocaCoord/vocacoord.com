@@ -3,7 +3,6 @@ import { Input, Button } from "reactstrap";
 import slide from "./assets/VCLogin.svg";
 import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
-import { sessionService } from "redux-react-session";
 import { PulseLoader } from "react-spinners";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
@@ -71,14 +70,7 @@ class Login extends Component {
           }
         ];
         if (res.status === 200) {
-          sessionService.saveSession({ token: "a1b2c3d4" }).then(() => {
-            sessionService.saveUser({ email }).then(() => {
-              this.props.history.push({
-                pathname: "/classrooms",
-                state: { classrooms }
-              });
-            });
-          });
+          console.log("logged in");
           this.props.dispatch({
             type: "LOAD_USER",
             payload: {
@@ -88,7 +80,7 @@ class Login extends Component {
               password
             }
           });
-          this.props.dispatch({type:"SHOW_STORE"})
+          this.props.dispatch({ type: "SHOW_STORE" });
         } else if (res.status === 400) {
           console.log("Your login was bad");
           setTimeout(() => this.setState({ loggingIn: false }), 3000);
@@ -141,4 +133,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(connect()(Login))
+export default withRouter(connect()(Login));

@@ -1,7 +1,6 @@
 import merge from "lodash/merge";
 import dotProp from "dot-prop-immutable";
 import { combineReducers } from "redux";
-import { sessionReducer } from "redux-react-session";
 
 const initialState = {
   user: {},
@@ -157,7 +156,6 @@ console.log(denormalizedData)
 */
 
 const rootReducer = combineReducers({
-  session: sessionReducer,
   userData: userDataReducer
 });
 

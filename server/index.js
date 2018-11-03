@@ -37,15 +37,6 @@ function worker() {
   app.use(morgan("combined"));
   app.use(cors());
   app.use(bodyParser.json());
-  /*app.use((req, res) => {
-    const reducer = combineReducers({
-      session: sessionReducer
-    });
-
-    const store = createStore(reducer);
-
-    sessionService.initServerSession(store, req);
-  });*/
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",
