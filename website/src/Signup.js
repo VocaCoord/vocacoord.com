@@ -3,7 +3,6 @@ import { Input, Button } from "reactstrap";
 import slide from "./assets/VCSignup.svg";
 import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
-import { sessionService } from "redux-react-session";
 import { PulseLoader } from "react-spinners";
 
 export default class Signup extends Component {
@@ -19,8 +18,8 @@ export default class Signup extends Component {
   }
 
   handleSignUp() {
-    this.setState({ signingUp: true })
-    
+    this.setState({ signingUp: true });
+
     const { firstName, lastName, email, password } = this.state;
 
     fetch(apiURL + "signup", {
@@ -71,14 +70,7 @@ export default class Signup extends Component {
           }
         ];
         if (res.status === 200) {
-          sessionService.saveSession({ token: "a1b2c3d4" }).then(() => {
-            sessionService.saveUser({ email }).then(() => {
-              this.props.history.push({
-                pathname: "/classrooms",
-                state: { classrooms }
-              });
-            });
-          });
+          console.log("signup succeeded");
         } else if (res.status === 400) {
           console.log("Your login was bad");
           setTimeout(() => this.setState({ signingUp: false }), 3000);

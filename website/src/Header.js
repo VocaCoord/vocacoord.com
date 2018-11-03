@@ -3,7 +3,6 @@ import logo from "./assets/VCLogo.png";
 import { Button } from "reactstrap";
 import "./VocaCoord.css";
 import { Link } from "react-router-dom";
-import { sessionService } from "redux-react-session";
 
 const logoStyle = {
   color: "white"
@@ -24,14 +23,7 @@ export default class Header extends Component {
             <Link to="/classrooms">
               <Button color="primary">Your Classes</Button>
             </Link>{" "}
-            <Button
-              color="primary"
-              outline
-              onClick={() => {
-                sessionService.deleteSession();
-                sessionService.deleteUser();
-              }}
-            >
+            <Button color="primary" outline>
               Log Out
             </Button>
           </div>
