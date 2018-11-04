@@ -4,7 +4,7 @@ import Header from "./Header.js";
 import Homepage from "./Homepage.js";
 import Login from "./Login.js";
 import Signup from "./Signup.js";
-import Classrooms from "./Classrooms.js";
+import Classrooms from "./containers/Classrooms.js";
 import Lost from "./Lost.js";
 import WordBanks from "./WordBanks.js";
 import WordBank from "./WordBank.js";
@@ -13,7 +13,7 @@ import "./VocaCoord.css";
 
 class Routing extends Component {
   render() {
-    const authenticated = false;
+    const authenticated = true;
     return (
       <Router>
         <div className="App">
