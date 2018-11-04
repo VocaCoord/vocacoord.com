@@ -52,7 +52,7 @@ function worker() {
   );
 
   // Priority serve any static files.
-  app.use(express.static(path.resolve(__dirname, "../react-ui/build")));
+  app.use(express.static(path.resolve(__dirname, "../website/build")));
 
   // Answer API requests.
   app.get("/api", (req, res) => {
@@ -170,10 +170,8 @@ function worker() {
   });
 
   // All remaining requests return the React app, so it can handle routing.
-  app.get("*", (request, response) => {
-    response.sendFile(
-      path.resolve(__dirname, "../react-ui/build", "index.html")
-    );
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../website/build", "index.html"));
   });
 
   server.on("request", app);
