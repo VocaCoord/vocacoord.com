@@ -18,12 +18,20 @@ class Classrooms extends Component {
       editingDialog: false,
       newClassName: ""
     };
+    this.generateTo = this.generateTo.bind(this);
     this.handleClassroomAdd = this.handleClassroomAdd.bind(this);
     this.handleClassroomStartEdit = this.handleClassroomStartEdit.bind(this);
     this.handleClassroomEdit = this.handleClassroomEdit.bind(this);
     this.handleClassroomRemove = this.handleClassroomRemove.bind(this);
     this.handleDialogChange = this.handleDialogChange.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
+  }
+
+  generateTo(classroom) {
+    const pathname = `${this.props.match.url}/${classroom.id}/wordbanks`;
+    return {
+      pathname
+    };
   }
 
   handleClassroomAdd() {
@@ -119,9 +127,7 @@ class Classrooms extends Component {
           }
           remove={this.handleClassroomRemove}
           title={"Classroom List"}
-          to={{
-            pathname: "/classrooms/test/wordbanks"
-          }}
+          generateTo={this.generateTo}
         />
         <AddButton
           variant="fab"

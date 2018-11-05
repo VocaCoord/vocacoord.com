@@ -6,7 +6,7 @@ import Login from "./Login.js";
 import Signup from "./Signup.js";
 import Classrooms from "./containers/Classrooms.js";
 import Lost from "./Lost.js";
-import WordBanks from "./WordBanks.js";
+import WordBanks from "./containers/WordBanks.js";
 import WordBank from "./WordBank.js";
 import PrivateRoute from "./PrivateRoute.js";
 import "./VocaCoord.css";
@@ -36,7 +36,7 @@ class Routing extends Component {
             />
             <PrivateRoute
               exact
-              path="/classrooms/:classroom/wordbanks/words"
+              path="/classrooms/:classroom/wordbanks/:wordbank/words"
               component={WordBank}
               authenticated={authenticated}
             />

@@ -10,7 +10,7 @@ import { DeleteButton, EditButton } from "./Buttons.js";
 import PropTypes from "prop-types";
 
 const ListInfo = props => {
-  const { edit, list, missing, remove, title, to } = props;
+  const { edit, generateTo, list, missing, remove, title } = props;
 
   return (
     <div>
@@ -22,7 +22,7 @@ const ListInfo = props => {
           {list.map((item, i) => {
             return (
               <ListItem button key={i}>
-                <Link to={to}>
+                <Link to={generateTo(item)}>
                   <ListItemText primary={item.name} />
                 </Link>
                 <ListItemSecondaryAction>
@@ -57,11 +57,11 @@ const ListInfo = props => {
 
 ListInfo.propTypes = {
   edit: PropTypes.func.isRequired,
+  generateTo: PropTypes.func.isRequired,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
   missing: PropTypes.string.isRequired,
   remove: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  to: PropTypes.object.isRequired
+  title: PropTypes.string.isRequired
 };
 
 export default ListInfo;

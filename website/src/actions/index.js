@@ -26,27 +26,27 @@ export const removeClass = id => {
   };
 };
 
-/* TODO */
-export const addBank = id => {
+/* works */
+export const addBank = (classId, name) => {
   return {
     type: "ADD_BANK",
-    payload: { id }
+    payload: { classId, name }
   };
 };
 
-/* TODO */
-export const editBank = id => {
+/* works */
+export const editBank = (id, name) => {
   return {
     type: "EDIT_BANK",
-    payload: { id }
+    payload: { id, name }
   };
 };
 
-/* TODO */
-export const removeBank = id => {
+/* works */
+export const removeBank = (classId, id) => {
   return {
     type: "REMOVE_BANK",
-    payload: { id }
+    payload: { classId, id }
   };
 };
 
