@@ -34,19 +34,41 @@ function userDataReducer(state = initialState, action) {
       return dotProp.delete(state, `classrooms.${id}`);
     }
 
-    /* TODO */
+    /* works */
     case "ADD_BANK": {
-      return;
+      const { classId } = action.payload;
+      const classState = dotProp.merge(
+        state,
+        `classrooms.${classId}.wordbanks`,
+        [uuid]
+      );
+      return dotProp.set(classState, `wordbanks.${uuid}`, {
+        ...action.payload,
+        id: uuid,
+        words: []
+      });
     }
 
-    /* TODO */
+    /* works */
     case "EDIT_BANK": {
-      return;
+      const { id, name } = action.payload;
+      return dotProp.set(state, `wordbanks.${id}.name`, name);
     }
 
-    /* TODO */
+    /* works */
     case "REMOVE_BANK": {
-      return;
+      const { classId, id } = action.payload;
+      const oldWordBanks = dotProp.get(
+        state,
+        `classrooms.${classId}.wordbanks`
+      );
+      const newWordBanks = oldWordBanks.filter(oldId => oldId !== id);
+      const classState = dotProp.set(
+        state,
+        `classrooms.${classId}.wordbanks`,
+        newWordBanks
+      );
+      return dotProp.delete(classState, `wordbanks.${id}`);
     }
 
     /* TODO */
@@ -63,11 +85,6 @@ function userDataReducer(state = initialState, action) {
     case "REMOVE_WORD": {
       return;
     }
-
-    /* works */
-    case "SHOW_STORE":
-      console.log(state);
-      return state;
 
     default:
       return state;
