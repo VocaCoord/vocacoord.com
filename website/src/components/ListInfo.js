@@ -22,9 +22,13 @@ const ListInfo = props => {
           {list.map((item, i) => {
             return (
               <ListItem button key={i}>
-                <Link to={generateTo(item)}>
+                {generateTo ? (
+                  <Link to={generateTo(item)}>
+                    <ListItemText primary={item.name} />
+                  </Link>
+                ) : (
                   <ListItemText primary={item.name} />
-                </Link>
+                )}
                 <ListItemSecondaryAction>
                   <EditButton
                     onClick={() => edit(item)}
@@ -57,7 +61,7 @@ const ListInfo = props => {
 
 ListInfo.propTypes = {
   edit: PropTypes.func.isRequired,
-  generateTo: PropTypes.func.isRequired,
+  generateTo: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
   missing: PropTypes.string.isRequired,
   remove: PropTypes.func.isRequired,
