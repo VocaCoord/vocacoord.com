@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import { createLogger } from "redux-logger";
+import { loadState, saveState } from "./localStorage";
+import throttle from "lodash/throttle";
 import rootReducer from "../reducers";
 import DevTools from "../containers/DevTools";
 
-const configureStore = preloadedState => {
+const configureStore = () => {
+  const preloadedState = loadState();
+
   const store = createStore(
     rootReducer,
     preloadedState,
@@ -11,6 +15,12 @@ const configureStore = preloadedState => {
       applyMiddleware(createLogger()),
       DevTools.instrument()
     )
+  );
+
+  store.subscribe(
+    throttle(() => {
+      saveState(store.getState());
+    }, 1000)
   );
 
   if (module.hot) {
