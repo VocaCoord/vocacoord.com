@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 
 export const ItemDialog = props => {
   const {
+    children,
     error,
     errorMsg,
     label,
@@ -43,6 +44,7 @@ export const ItemDialog = props => {
           helperText={error ? errorMsg : ""}
         />
       </DialogContent>
+      {children}
       <DialogActions>
         <Button onClick={() => onCancel()} color="primary">
           Cancel

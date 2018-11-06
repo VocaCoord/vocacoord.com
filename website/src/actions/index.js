@@ -51,18 +51,18 @@ export const removeBank = (classId, id) => {
 };
 
 /* TODO */
-export const addWord = (wordBankId, name) => {
+export const addWord = (wordBankId, word) => {
   return {
     type: "ADD_WORD",
-    payload: { wordBankId, name }
+    payload: { wordBankId, ...word }
   };
 };
 
 /* TODO */
-export const editWord = (id, name) => {
+export const editWord = (id, word) => {
   return {
     type: "EDIT_WORD",
-    payload: { id, name }
+    payload: { id, ...word }
   };
 };
 

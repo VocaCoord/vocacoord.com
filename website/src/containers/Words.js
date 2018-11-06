@@ -5,6 +5,7 @@ import { ItemDialog } from "../components/Dialog.js";
 import ListInfo from "../components/ListInfo.js";
 import { AddButton, BackButton } from "../components/Buttons.js";
 import { addWord, editWord, removeWord } from "../actions";
+import { TextField, DialogContent } from "@material-ui/core";
 
 class Words extends Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class Words extends Component {
       currentWord: {},
       dialogError: false,
       editingDialog: false,
-      newWordName: ""
+      newWordDefinition: "",
+      newWordName: "",
+      newWordImage: ""
     };
     this.handleWordAdd = this.handleWordAdd.bind(this);
     this.handleWordStartEdit = this.handleWordStartEdit.bind(this);
@@ -22,6 +25,7 @@ class Words extends Component {
     this.handleWordRemove = this.handleWordRemove.bind(this);
     this.handleDialogChange = this.handleDialogChange.bind(this);
     this.handleDialogClose = this.handleDialogClose.bind(this);
+    this.handleChangeImage = this.handleChangeImage.bind(this);
   }
 
   handleWordAdd() {
@@ -29,8 +33,18 @@ class Words extends Component {
       return this.setState({ dialogError: true });
 
     const { wordbank } = this.props.match.params;
-    this.props.dispatch(addWord(wordbank, this.state.newWordName));
-    this.setState({ addingDialog: false, newWordName: "" });
+    const word = {
+      name: this.state.newWordName,
+      definition: this.state.newWordDefinition,
+      image: this.state.newWordImage
+    };
+    this.props.dispatch(addWord(wordbank, word));
+    this.setState({
+      addingDialog: false,
+      newWordName: "",
+      newWordDefinition: "",
+      newWordImage: ""
+    });
   }
 
   handleWordStartEdit(currentWord) {
@@ -41,9 +55,13 @@ class Words extends Component {
     if (this.state.newWordName === "")
       return this.setState({ dialogError: true });
 
-    const id = this.state.currentWord.id,
-      name = this.state.newWordName;
-    this.props.dispatch(editWord(id, name));
+    const id = this.state.currentWord.id;
+    const word = {
+      name: this.state.newWordName,
+      definition: this.state.newWordDefinition,
+      image: this.state.newWordImage
+    };
+    this.props.dispatch(editWord(id, word));
     this.setState({ editingDialog: false });
   }
 
@@ -61,8 +79,18 @@ class Words extends Component {
       addingDialog: false,
       dialogError: false,
       editingDialog: false,
-      newWordName: ""
+      newWordName: "",
+      newWordDefinition: "",
+      newWordImage: ""
     });
+  }
+
+  handleChangeImage(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    const changeImage = newWordImage => this.setState({ newWordImage });
+    reader.addEventListener("load", () => changeImage(reader.result), false);
+    if (file) reader.readAsDataURL(file);
   }
 
   render() {
@@ -84,7 +112,29 @@ class Words extends Component {
           open={this.state.addingDialog}
           submitMsg={"Add"}
           title={"Add Word"}
-        />
+        >
+          <DialogContent>
+            <TextField
+              margin="dense"
+              label={"Definition"}
+              fullWidth
+              onChange={e =>
+                this.setState({ newWordDefinition: e.target.value })
+              }
+            />
+          </DialogContent>
+          <DialogContent>
+            <img
+              src={this.state.newWordImage}
+              style={{ maxHeight: "200px", maxWidth: "200px" }}
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={this.handleChangeImage}
+            />
+          </DialogContent>
+        </ItemDialog>
         <ItemDialog
           error={this.state.dialogError}
           errorMsg={"This field cannot be blank."}
@@ -96,7 +146,29 @@ class Words extends Component {
           open={this.state.editingDialog}
           submitMsg={"Change"}
           title={"Edit Word"}
-        />
+        >
+          <DialogContent>
+            <TextField
+              margin="dense"
+              label={"Definition"}
+              fullWidth
+              onChange={e =>
+                this.setState({ newWordDefinition: e.target.value })
+              }
+            />
+          </DialogContent>
+          <DialogContent>
+            <img
+              src={this.state.newWordImage}
+              style={{ maxHeight: "200px", maxWidth: "200px" }}
+            />
+            <input
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={this.handleChangeImage}
+            />
+          </DialogContent>
+        </ItemDialog>
         <ListInfo
           edit={this.handleWordStartEdit}
           list={wordList}
