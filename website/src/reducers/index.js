@@ -90,8 +90,13 @@ function userDataReducer(state = initialState, action) {
 
     /* TODO */
     case "EDIT_WORD": {
-      const { id, name } = action.payload;
-      return dotProp.set(state, `words.${id}.name`, name);
+      const { id, name, definition, image } = action.payload;
+      let newState = dotProp.get(state, "", state);
+      if (name) newState = dotProp.set(newState, `words.${id}.name`, name);
+      if (definition)
+        newState = dotProp.set(newState, `words.${id}.definition`, definition);
+      if (image) newState = dotProp.set(newState, `words.${id}.image`, image);
+      return newState;
     }
 
     /* TODO */

@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
+  Avatar,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction
 } from "@material-ui/core";
@@ -22,12 +24,29 @@ const ListInfo = props => {
           {list.map((item, i) => {
             return (
               <ListItem button key={i}>
+                {item.image && (
+                  <ListItemAvatar>
+                    <Avatar
+                      src={item.image}
+                      style={{
+                        borderRadius: 0,
+                        minWidth: "60px",
+                        minHeight: "60px"
+                      }}
+                    />
+                  </ListItemAvatar>
+                )}
                 {generateTo ? (
                   <Link to={generateTo(item)}>
                     <ListItemText primary={item.name} />
                   </Link>
                 ) : (
-                  <ListItemText primary={item.name} />
+                  <ListItemText
+                    primary={item.name}
+                    secondary={
+                      item.definition ? `Definition: ${item.definition}` : ""
+                    }
+                  />
                 )}
                 <ListItemSecondaryAction>
                   <EditButton
