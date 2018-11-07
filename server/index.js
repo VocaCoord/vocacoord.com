@@ -145,13 +145,43 @@ function worker() {
       });
   });
 
+  app.post("/api/sync", (req, res) => {
+    console.log("sync", req.body);
+    db.collection(usersCollection).findOneAndUpdate(
+      { email: req.body.user.email },
+      { $set: { data: req.body.data } }
+    );
+  });
+
   app.post("/api/login", (req, res) => {
     console.log("login", req.body);
     const { email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
-      if (!doc) return res.sendStatus(400);
-      if (doc.password !== password) return res.sendStatus(400);
-      res.sendStatus(200);
+      let response;
+      if (doc) {
+        let data = doc.data || {};
+        response = {
+          status: "LOGIN_SUCCESS",
+          payload: {
+            authenticated: true,
+            firstName: doc.firstName,
+            lastName: doc.lastName,
+            email: doc.email,
+            data
+          }
+        };
+      }
+
+      if (!doc || doc.password !== password) {
+        response = {
+          status: "LOGIN_FAILURE",
+          payload: {
+            authenticated: false
+          }
+        };
+      }
+
+      res.status(200).send({ response });
     });
   });
 
@@ -159,11 +189,23 @@ function worker() {
     console.log("signup", req.body);
     const { firstName, lastName, email, password } = req.body;
     db.collection(usersCollection).findOne({ email }, (err, doc) => {
-      if (doc) return res.sendStatus(400);
+      let response = {
+        status: "SIGNUP_SUCCESS",
+        payload: {
+          authenticated: true,
+          firstName,
+          lastName,
+          email
+        }
+      };
+      if (doc) {
+        response.status = "SIGNUP_FAILURE";
+        response.payload.authenticated = false;
+      }
       db.collection(usersCollection).insertOne(
-        { firstName, lastName, email, password },
+        { firstName, lastName, email, password, data: {} },
         (err, doc) => {
-          res.sendStatus(200);
+          res.status(200).send({ response });
         }
       );
     });

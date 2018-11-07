@@ -2,11 +2,20 @@ import merge from "lodash/merge";
 import dotProp from "dot-prop-immutable";
 import { combineReducers } from "redux";
 import uuidv1 from "uuid/v1";
+import {
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE
+} from "../actions/index.js";
 
 const initialState = {
   classrooms: {},
   wordbanks: {},
-  words: {}
+  words: {},
+  user: {
+    authenticated: false
+  }
 };
 
 function userDataReducer(state = initialState, action) {
@@ -110,6 +119,36 @@ function userDataReducer(state = initialState, action) {
         newWords
       );
       return dotProp.delete(wordState, `words.${id}`);
+    }
+
+    case SIGNUP_FAILURE:
+    case SIGNUP_SUCCESS: {
+      return dotProp.set(state, `user`, { ...action.payload });
+    }
+
+    case LOGIN_FAILURE:
+    case LOGIN_SUCCESS: {
+      const {
+        authenticated,
+        firstName,
+        lastName,
+        email,
+        data
+      } = action.payload;
+      let newUser = {
+        authenticated,
+        firstName,
+        lastName,
+        email
+      };
+      let newState = dotProp.set(state, `user`, newUser);
+      newState = dotProp.set(newState, `classrooms`, data.classrooms);
+      newState = dotProp.set(newState, `wordbanks`, data.wordbanks);
+      return dotProp.set(newState, `words`, data.words);
+    }
+
+    case "LOGOUT": {
+      return dotProp.set(state, `user`, { authenticated: false });
     }
 
     default:

@@ -4,8 +4,15 @@ import slide from "./assets/VCSignup.svg";
 import "./VocaCoord.css";
 import { apiURL } from "./Constants.js";
 import { PulseLoader } from "react-spinners";
+import {
+  authenticateUser,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE
+} from "./actions/index.js";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,51 +37,17 @@ export default class Signup extends Component {
       body: JSON.stringify({ firstName, lastName, email, password })
     })
       .then(res => {
-        const date = new Date();
-        const dateString = `Created on ${date.getDate()}/${date.getMonth() +
-          1}/${date.getFullYear()} at ${date.getHours()}:${date.getMinutes()}`;
-        const classrooms = [
-          {
-            className: "test class",
-            wordbanks: [
-              {
-                id: 0,
-                name: "test1",
-                createdAt: dateString,
-                words: ["test", "test2", "test3"]
-              },
-              {
-                id: 1,
-                name: "test2",
-                createdAt: dateString,
-                words: ["dragons", "love", "tacos"]
-              }
-            ]
-          },
-          {
-            className: "test class 2",
-            wordbanks: [
-              {
-                id: 0,
-                name: "blah1",
-                createdAt: dateString,
-                words: ["blah", "blah2", "blah3"]
-              },
-              {
-                id: 1,
-                name: "blah2",
-                createdAt: dateString,
-                words: ["dragons", "love", "tacos"]
-              }
-            ]
-          }
-        ];
-        if (res.status === 200) {
-          console.log("signup succeeded");
-        } else if (res.status === 400) {
-          console.log("Your login was bad");
-          setTimeout(() => this.setState({ signingUp: false }), 3000);
-        }
+        if (res.status === 200) return res.json();
+      })
+      .then(json => {
+        this.props.dispatch(authenticateUser(json));
+        if (json.response.status === SIGNUP_SUCCESS)
+          return this.props.history.push("/classrooms");
+        if (json.response.status === SIGNUP_FAILURE)
+          setTimeout(
+            () => this.setState({ signingUp: false, signupError: true }),
+            1000
+          );
       })
       .catch(err => console.log(err));
   }
@@ -132,3 +105,5 @@ export default class Signup extends Component {
     );
   }
 }
+
+export default withRouter(connect()(Signup));
