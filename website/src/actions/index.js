@@ -73,3 +73,20 @@ export const removeWord = (wordBankId, id) => {
     payload: { wordBankId, id }
   };
 };
+
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const authenticateUser = ({ response }) => {
+  return {
+    type: response.status,
+    payload: response.payload
+  };
+};
+
+export const logOutUser = () => {
+  return {
+    type: "LOGOUT"
+  };
+};

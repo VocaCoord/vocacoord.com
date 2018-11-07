@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import Header from "./Header.js";
 import Homepage from "./Homepage.js";
 import Login from "./Login.js";
@@ -13,7 +14,7 @@ import "./VocaCoord.css";
 
 class Routing extends Component {
   render() {
-    const authenticated = true;
+    const { authenticated } = this.props.user;
     return (
       <Router>
         <div className="App">
@@ -48,4 +49,10 @@ class Routing extends Component {
   }
 }
 
-export default Routing;
+const mapStateToProps = state => {
+  return {
+    user: state.userData.user
+  };
+};
+
+export default connect(mapStateToProps)(Routing);

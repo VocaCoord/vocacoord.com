@@ -3,13 +3,17 @@ import logo from "./assets/VCLogo.png";
 import { Button } from "reactstrap";
 import "./VocaCoord.css";
 import { Link } from "react-router-dom";
+import { logOutUser } from "./actions/index.js";
+import { connect } from "react-redux";
 
 const logoStyle = {
   color: "white"
 };
 
-export default class Header extends Component {
-  logOut() {}
+class Header extends Component {
+  handleLogOut() {
+    this.props.dispatch(logOutUser());
+  }
 
   render() {
     return (
@@ -23,7 +27,7 @@ export default class Header extends Component {
             <Link to="/classrooms">
               <Button color="primary">Your Classes</Button>
             </Link>{" "}
-            <Button color="primary" outline>
+            <Button color="primary" outline onClick={() => this.handleLogOut()}>
               Log Out
             </Button>
           </div>
@@ -43,3 +47,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default connect()(Header);
