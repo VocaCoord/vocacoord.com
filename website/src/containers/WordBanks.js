@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { ItemDialog } from "../components/Dialog.js";
+import ItemDialog from "../components/Dialog.js";
 import ListInfo from "../components/ListInfo.js";
 import { AddButton, BackButton } from "../components/Buttons.js";
 import { addBank, editBank, removeBank } from "../actions";

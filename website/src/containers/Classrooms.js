@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ItemDialog } from "../components/Dialog.js";
+import ItemDialog from "../components/Dialog.js";
 import { AddButton } from "../components/Buttons.js";
 import ListInfo from "../components/ListInfo.js";
 import { connect } from "react-redux";

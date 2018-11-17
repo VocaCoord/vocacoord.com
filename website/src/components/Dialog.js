@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 
-export const ItemDialog = props => {
+const ItemDialog = props => {
   const {
     children,
     error,
@@ -70,3 +70,5 @@ ItemDialog.propTypes = {
   text: PropTypes.string,
   title: PropTypes.string.isRequired
 };
+
+export default ItemDialog;
