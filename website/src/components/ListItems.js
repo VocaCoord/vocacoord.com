@@ -11,7 +11,7 @@ import {
 import { DeleteButton, EditButton } from "./Buttons.js";
 import PropTypes from "prop-types";
 
-const ListInfo = props => {
+const ListItems = props => {
   const { edit, generateTo, list, missing, remove, title } = props;
 
   return (
@@ -78,7 +78,7 @@ const ListInfo = props => {
   );
 };
 
-ListInfo.propTypes = {
+ListItems.propTypes = {
   edit: PropTypes.func.isRequired,
   generateTo: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -87,4 +87,4 @@ ListInfo.propTypes = {
   title: PropTypes.string.isRequired
 };
 
-export default ListInfo;
+export default ListItems;

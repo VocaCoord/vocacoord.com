@@ -36,7 +36,12 @@ function worker() {
   app.use(helmet());
   app.use(morgan("combined"));
   app.use(cors());
-  app.use(bodyParser.json());
+  app.use(
+    bodyParser.json({
+      limit: "100mb",
+      parameterLimit: 100000
+    })
+  );
 
   mongodb.MongoClient.connect(
     process.env.MONGODB_URI || "mongodb://localhost:27017/VocaCoord",

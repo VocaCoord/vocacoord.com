@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import ItemDialog from "../components/Dialog.js";
-import ListInfo from "../components/ListInfo.js";
+import ListItems from "../components/ListItems";
 import { AddButton, BackButton } from "../components/Buttons.js";
 import { addBank, editBank, removeBank } from "../actions";
 
@@ -110,7 +110,7 @@ class WordBanks extends Component {
           submitMsg={"Change"}
           title={"Edit WordBank"}
         />
-        <ListInfo
+        <ListItems
           edit={this.handleWordBankStartEdit}
           list={wordBankList}
           missing={

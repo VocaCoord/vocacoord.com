@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import ItemDialog from "../components/Dialog.js";
 import { AddButton } from "../components/Buttons.js";
-import ListInfo from "../components/ListInfo.js";
+import ListItems from "../components/ListItems";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import { apiURL } from "../Constants.js";
+import { apiURL } from "../constants/Assorted";
 import { addClass, editClass, removeClass } from "../actions";
 
 class Classrooms extends Component {
@@ -119,7 +119,7 @@ class Classrooms extends Component {
           submitMsg={"Change"}
           title={"Edit Classroom"}
         />
-        <ListInfo
+        <ListItems
           edit={this.handleClassroomStartEdit}
           list={classList}
           missing={
