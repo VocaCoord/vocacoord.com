@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
 import slide from "./assets/VCLogin.svg";
 import "./VocaCoord.css";
-import { apiURL } from "./Constants.js";
+import { apiURL } from "./constants/Assorted";
 import { PulseLoader } from "react-spinners";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
-import {
-  authenticateUser,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE
-} from "./actions/index.js";
+import { authenticateUser } from "./actions/index.js";
+import { LOGIN_SUCCESS, LOGIN_FAILURE } from "./constants/ActionTypes";
 
 class Login extends Component {
   constructor(props) {

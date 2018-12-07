@@ -23,7 +23,8 @@ const ItemDialog = props => {
     open,
     submitMsg,
     text,
-    title
+    title,
+    value
   } = props;
   return (
     <Dialog
@@ -42,6 +43,7 @@ const ItemDialog = props => {
           onChange={e => onChange(e)}
           error={error}
           helperText={error ? errorMsg : ""}
+          value={value}
         />
       </DialogContent>
       {children}
@@ -58,6 +60,7 @@ const ItemDialog = props => {
 };
 
 ItemDialog.propTypes = {
+  defaultValue: PropTypes.string,
   error: PropTypes.bool,
   errorMsg: PropTypes.string,
   label: PropTypes.string,

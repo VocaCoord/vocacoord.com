@@ -1,7 +1,7 @@
 import React from "react";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import ListInfo from "../../components/ListInfo.js";
+import ListItems from "../../components/ListItems";
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -15,7 +15,7 @@ const globalProps = {
 
 describe("List Component", () => {
   it("renders without crashing", () => {
-    const wrapper = shallow(<ListInfo {...globalProps} />);
+    const wrapper = shallow(<ListItems {...globalProps} />);
     expect(wrapper.exists()).toBe(true);
   });
 });

@@ -1,13 +1,7 @@
-import merge from "lodash/merge";
 import dotProp from "dot-prop-immutable";
 import { combineReducers } from "redux";
 import uuidv1 from "uuid/v1";
-import {
-  SIGNUP_SUCCESS,
-  SIGNUP_FAILURE,
-  LOGIN_SUCCESS,
-  LOGIN_FAILURE
-} from "../actions/index.js";
+import * as types from "../constants/ActionTypes";
 
 const initialState = {
   classrooms: {},
@@ -20,8 +14,7 @@ const initialState = {
 
 function userDataReducer(state = initialState, action) {
   switch (action.type) {
-    /* works */
-    case "ADD_CLASS": {
+    case types.ADD_CLASS: {
       const uuid = uuidv1();
       return dotProp.set(state, `classrooms.${uuid}`, {
         ...action.payload,
@@ -30,21 +23,18 @@ function userDataReducer(state = initialState, action) {
       });
     }
 
-    /* works */
-    case "EDIT_CLASS": {
+    case types.EDIT_CLASS: {
       const { id, name } = action.payload;
       return dotProp.set(state, `classrooms.${id}.name`, name);
     }
 
-    /* works */
-    case "REMOVE_CLASS": {
+    case types.REMOVE_CLASS: {
       const { id } = action.payload;
       const newClassState = removeWordBanks(state, id);
       return dotProp.delete(newClassState, `classrooms.${id}`);
     }
 
-    /* works */
-    case "ADD_BANK": {
+    case types.ADD_BANK: {
       const uuid = uuidv1();
       const { classId } = action.payload;
       const classState = dotProp.merge(
@@ -59,14 +49,12 @@ function userDataReducer(state = initialState, action) {
       });
     }
 
-    /* works */
-    case "EDIT_BANK": {
+    case types.EDIT_BANK: {
       const { id, name } = action.payload;
       return dotProp.set(state, `wordbanks.${id}.name`, name);
     }
 
-    /* works */
-    case "REMOVE_BANK": {
+    case types.REMOVE_BANK: {
       const { classId, id } = action.payload;
       const newWordState = removeWords(state, id);
       const oldWordBanks = dotProp.get(
@@ -82,8 +70,7 @@ function userDataReducer(state = initialState, action) {
       return dotProp.delete(newClassState, `wordbanks.${id}`);
     }
 
-    /* TODO */
-    case "ADD_WORD": {
+    case types.ADD_WORD: {
       const uuid = uuidv1();
       const { wordBankId } = action.payload;
       const wordBankState = dotProp.merge(
@@ -97,8 +84,7 @@ function userDataReducer(state = initialState, action) {
       });
     }
 
-    /* TODO */
-    case "EDIT_WORD": {
+    case types.EDIT_WORD: {
       const { id, name, definition, image } = action.payload;
       let newState = dotProp.get(state, "", state);
       if (name) newState = dotProp.set(newState, `words.${id}.name`, name);
@@ -108,8 +94,7 @@ function userDataReducer(state = initialState, action) {
       return newState;
     }
 
-    /* TODO */
-    case "REMOVE_WORD": {
+    case types.REMOVE_WORD: {
       const { wordBankId, id } = action.payload;
       const oldWords = dotProp.get(state, `wordbanks.${wordBankId}.words`);
       const newWords = oldWords.filter(oldId => oldId !== id);
@@ -121,13 +106,13 @@ function userDataReducer(state = initialState, action) {
       return dotProp.delete(wordState, `words.${id}`);
     }
 
-    case SIGNUP_FAILURE:
-    case SIGNUP_SUCCESS: {
+    case types.SIGNUP_FAILURE:
+    case types.SIGNUP_SUCCESS: {
       return dotProp.set(state, `user`, { ...action.payload });
     }
 
-    case LOGIN_FAILURE:
-    case LOGIN_SUCCESS: {
+    case types.LOGIN_FAILURE:
+    case types.LOGIN_SUCCESS: {
       const {
         authenticated,
         firstName,
@@ -147,7 +132,7 @@ function userDataReducer(state = initialState, action) {
       return dotProp.set(newState, `words`, data.words);
     }
 
-    case "LOGOUT": {
+    case types.LOG_OUT: {
       return dotProp.set(state, `user`, { authenticated: false });
     }
 
