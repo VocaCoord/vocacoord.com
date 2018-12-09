@@ -1,5 +1,6 @@
 {
   "extends": ["airbnb", "prettier", "prettier/react"],
+  "parser": "babel-eslint",
   "plugins": ["prettier", "json", "react"],
   "rules": {
     "react/jsx-filename-extension": [
@@ -12,7 +13,8 @@
     "no-underscore-dangle": 0,
     "import/imports-first": ["error", "absolute-first"],
     "import/newline-after-import": "error",
-    "linebreak-style": ["error", "windows"]
+    "linebreak-style": ["error", "windows"],
+    "consistent-return": "off"
   },
   "globals": {
     "window": true,

@@ -1,19 +1,18 @@
-import React from "react";
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import * as types from "../../constants/ActionTypes";
-import * as actions from "../../actions/index";
-import uuidv1 from "uuid/v1";
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import uuidv1 from 'uuid/v1';
+import * as types from '../constants/ActionTypes';
+import * as actions from './index';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-describe("Class Action Creators", () => {
-  it("should create an action to add a classroom", () => {
+describe('Class Action Creators', () => {
+  it('should create an action to add a classroom', () => {
     const code = Math.random()
       .toString(36)
       .substring(2, 6)
       .toUpperCase();
-    const name = "Test classroom";
+    const name = 'Test classroom';
     const expectedAction = {
       type: types.ADD_CLASS,
       payload: { code, name }
@@ -22,9 +21,9 @@ describe("Class Action Creators", () => {
     expect(actions.addClass(code, name)).toEqual(expectedAction);
   });
 
-  it("should create an action to edit a classroom", () => {
+  it('should create an action to edit a classroom', () => {
     const id = uuidv1();
-    const name = "New test classroom name";
+    const name = 'New test classroom name';
     const expectedAction = {
       type: types.EDIT_CLASS,
       payload: { id, name }
@@ -33,7 +32,7 @@ describe("Class Action Creators", () => {
     expect(actions.editClass(id, name)).toEqual(expectedAction);
   });
 
-  it("should create an action to remove a classroom", () => {
+  it('should create an action to remove a classroom', () => {
     const id = uuidv1();
     const expectedAction = {
       type: types.REMOVE_CLASS,
@@ -44,10 +43,10 @@ describe("Class Action Creators", () => {
   });
 });
 
-describe("Word Bank Action Creators", () => {
-  it("should create an action to add a word bank", () => {
+describe('Word Bank Action Creators', () => {
+  it('should create an action to add a word bank', () => {
     const classId = uuidv1();
-    const name = "Test word bank";
+    const name = 'Test word bank';
     const expectedAction = {
       type: types.ADD_BANK,
       payload: { classId, name }
@@ -56,9 +55,9 @@ describe("Word Bank Action Creators", () => {
     expect(actions.addBank(classId, name)).toEqual(expectedAction);
   });
 
-  it("should create an action to edit a word bank", () => {
+  it('should create an action to edit a word bank', () => {
     const id = uuidv1();
-    const name = "New test word bank name";
+    const name = 'New test word bank name';
     const expectedAction = {
       type: types.EDIT_BANK,
       payload: { id, name }
@@ -67,7 +66,7 @@ describe("Word Bank Action Creators", () => {
     expect(actions.editBank(id, name)).toEqual(expectedAction);
   });
 
-  it("should create an action to remove a word bank", () => {
+  it('should create an action to remove a word bank', () => {
     const classId = uuidv1();
     const id = uuidv1();
     const expectedAction = {
@@ -79,13 +78,13 @@ describe("Word Bank Action Creators", () => {
   });
 });
 
-describe("Word Action Creators", () => {
-  it("should create an action to add a word", () => {
+describe('Word Action Creators', () => {
+  it('should create an action to add a word', () => {
     const wordBankId = uuidv1();
     const word = {
-      name: "Test word",
-      definition: "Test word definition",
-      image: "Test word image"
+      name: 'Test word',
+      definition: 'Test word definition',
+      image: 'Test word image'
     };
     const expectedAction = {
       type: types.ADD_WORD,
@@ -95,12 +94,12 @@ describe("Word Action Creators", () => {
     expect(actions.addWord(wordBankId, word)).toEqual(expectedAction);
   });
 
-  it("should create an action to edit a word", () => {
+  it('should create an action to edit a word', () => {
     const id = uuidv1();
     const word = {
-      name: "New test word",
-      definition: "New test word definition",
-      image: "New test word image"
+      name: 'New test word',
+      definition: 'New test word definition',
+      image: 'New test word image'
     };
     const expectedAction = {
       type: types.EDIT_WORD,
@@ -110,7 +109,7 @@ describe("Word Action Creators", () => {
     expect(actions.editWord(id, word)).toEqual(expectedAction);
   });
 
-  it("should create an action to remove a word", () => {
+  it('should create an action to remove a word', () => {
     const wordBankId = uuidv1();
     const id = uuidv1();
     const expectedAction = {
@@ -122,8 +121,8 @@ describe("Word Action Creators", () => {
   });
 });
 
-describe("User Action Creators", () => {
-  it("should create an action to log out the user", () => {
+describe('User Action Creators', () => {
+  it('should create an action to log out the user', () => {
     const expectedAction = {
       type: types.LOG_OUT
     };
