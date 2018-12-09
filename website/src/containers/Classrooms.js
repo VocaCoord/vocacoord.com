@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import ItemDialog from "../components/Dialog.js";
-import { AddButton } from "../components/Buttons.js";
-import ListItems from "../components/ListItems";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { apiURL } from "../constants/Assorted";
-import { addClass, editClass, removeClass } from "../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import ItemDialog from '../components/Dialog';
+import { AddButton } from '../components/Buttons';
+import ListItems from '../components/ListItems';
+import { apiURL } from '../constants/Assorted';
+import { addClass, editClass, removeClass } from '../actions';
 
 class Classrooms extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class Classrooms extends Component {
       currentClass: {},
       dialogError: false,
       editingDialog: false,
-      newClassName: ""
+      newClassName: ''
     };
     this.generateTo = this.generateTo.bind(this);
     this.handleClassroomAdd = this.handleClassroomAdd.bind(this);
@@ -28,31 +28,34 @@ class Classrooms extends Component {
   }
 
   generateTo(classroom) {
-    const pathname = `${this.props.match.url}/${classroom.id}/wordbanks`;
+    const { match } = this.props;
+    const pathname = `${match.url}/${classroom.id}/wordbanks`;
     return {
       pathname
     };
   }
 
   handleClassroomAdd() {
-    if (this.state.newClassName === "")
-      return this.setState({ dialogError: true });
+    const { newClassName } = this.state;
+    const { dispatch } = this.props;
+
+    if (newClassName === '') return this.setState({ dialogError: true });
 
     this.setState({ addingDialog: false });
-    fetch(apiURL + "create", {
-      method: "GET",
+    fetch(`${apiURL}/create`, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(json => {
-        const code = json.classID,
-          name = this.state.newClassName;
-        this.props.dispatch(addClass(code, name));
+        const code = json.classID;
+        const name = newClassName;
+        dispatch(addClass(code, name));
         this.setState({
           creatingClass: false,
-          newClassName: ""
+          newClassName: ''
         });
       });
   }
@@ -62,18 +65,21 @@ class Classrooms extends Component {
   }
 
   handleClassroomEdit() {
-    if (this.state.newClassName === "")
-      return this.setState({ dialogError: true });
+    const { newClassName, currentClass } = this.state;
+    const { dispatch } = this.props;
 
-    const id = this.state.currentClass.id,
-      name = this.state.newClassName;
-    this.props.dispatch(editClass(id, name));
+    if (newClassName === '') return this.setState({ dialogError: true });
+
+    const { id } = currentClass;
+    const name = newClassName;
+    dispatch(editClass(id, name));
 
     this.setState({ editingDialog: false });
   }
 
   handleClassroomRemove(classroom) {
-    this.props.dispatch(removeClass(classroom.id));
+    const { dispatch } = this.props;
+    dispatch(removeClass(classroom.id));
   }
 
   handleDialogChange(e) {
@@ -86,38 +92,44 @@ class Classrooms extends Component {
       addingDialog: false,
       editingDialog: false,
       creatingClass: false,
-      newClassName: ""
+      newClassName: ''
     });
   }
 
   render() {
-    let { classrooms } = this.props;
+    const {
+      addingDialog,
+      dialogError,
+      editingDialog,
+      creatingClass
+    } = this.state;
+    const { classrooms } = this.props;
     const classList = Object.keys(classrooms).map(key => classrooms[key]);
     return (
       <div>
         <ItemDialog
-          error={this.state.dialogError}
-          errorMsg={"This field cannot be blank."}
-          label={"Classroom Name"}
+          error={dialogError}
+          errorMsg="This field cannot be blank."
+          label="Classroom Name"
           onCancel={this.handleDialogClose}
           onChange={this.handleDialogChange}
           onClickOut={this.handleDialogClose}
           onSubmit={this.handleClassroomAdd}
-          open={this.state.addingDialog}
-          submitMsg={"Add"}
-          title={"Add Classroom"}
+          open={addingDialog}
+          submitMsg="Add"
+          title="Add Classroom"
         />
         <ItemDialog
-          error={this.state.dialogError}
-          errorMsg={"This field cannot be blank."}
-          label={"Classroom Name"}
+          error={dialogError}
+          errorMsg="This field cannot be blank."
+          label="Classroom Name"
           onCancel={this.handleDialogClose}
           onChange={this.handleDialogChange}
           onClickOut={this.handleDialogClose}
           onSubmit={this.handleClassroomEdit}
-          open={this.state.editingDialog}
-          submitMsg={"Change"}
-          title={"Edit Classroom"}
+          open={editingDialog}
+          submitMsg="Change"
+          title="Edit Classroom"
         />
         <ListItems
           edit={this.handleClassroomStartEdit}
@@ -126,7 +138,7 @@ class Classrooms extends Component {
             "It looks like you don't have any classrooms yet, click the add button to create a classroom"
           }
           remove={this.handleClassroomRemove}
-          title={"Classroom List"}
+          title="Classroom List"
           generateTo={this.generateTo}
         />
         <AddButton
@@ -134,15 +146,15 @@ class Classrooms extends Component {
           color="primary"
           aria-label="Add"
           style={{
-            position: "absolute",
+            position: 'absolute',
             right: 10,
             bottom: 10,
-            outline: "none"
+            outline: 'none'
           }}
           onClick={() =>
             this.setState({ addingDialog: true, creatingClass: true })
           }
-          disabled={this.state.creatingClass}
+          disabled={creatingClass}
         />
       </div>
     );

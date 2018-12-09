@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import ItemDialog from "../components/Dialog.js";
-import ListItems from "../components/ListItems";
-import { AddButton, BackButton } from "../components/Buttons.js";
-import { addBank, editBank, removeBank } from "../actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import ItemDialog from '../components/Dialog';
+import ListItems from '../components/ListItems';
+import { AddButton, BackButton } from '../components/Buttons';
+import { addBank, editBank, removeBank } from '../actions';
 
 class WordBanks extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class WordBanks extends Component {
       currentWordBank: {},
       dialogError: false,
       editingDialog: false,
-      newWordBankName: ""
+      newWordBankName: ''
     };
     this.generateTo = this.generateTo.bind(this);
     this.handleWordBankAdd = this.handleWordBankAdd.bind(this);
@@ -26,19 +26,22 @@ class WordBanks extends Component {
   }
 
   generateTo(wordBank) {
-    const pathname = `${this.props.match.url}/${wordBank.id}/words`;
+    const { match } = this.props;
+    const pathname = `${match.url}/${wordBank.id}/words`;
     return {
       pathname
     };
   }
 
   handleWordBankAdd() {
-    if (this.state.newWordBankName === "")
-      return this.setState({ dialogError: true });
+    const { newWordBankName } = this.state;
+    const { match, dispatch } = this.props;
 
-    const { classroom } = this.props.match.params;
-    this.props.dispatch(addBank(classroom, this.state.newWordBankName));
-    this.setState({ addingDialog: false, newWordBankName: "" });
+    if (newWordBankName === '') return this.setState({ dialogError: true });
+
+    const { classroom } = match.params;
+    dispatch(addBank(classroom, newWordBankName));
+    this.setState({ addingDialog: false, newWordBankName: '' });
   }
 
   handleWordBankStartEdit(currentWordBank) {
@@ -46,18 +49,21 @@ class WordBanks extends Component {
   }
 
   handleWordBankEdit() {
-    if (this.state.newWordBankName === "")
-      return this.setState({ dialogError: true });
+    const { newWordBankName, currentWordBank } = this.state;
+    const { dispatch } = this.props;
 
-    const id = this.state.currentWordBank.id,
-      name = this.state.newWordBankName;
-    this.props.dispatch(editBank(id, name));
+    if (newWordBankName === '') return this.setState({ dialogError: true });
+
+    const { id } = currentWordBank;
+    const name = newWordBankName;
+    dispatch(editBank(id, name));
     this.setState({ editingDialog: false });
   }
 
   handleWordBankRemove(wordBank) {
+    const { dispatch } = this.props;
     const { classId, id } = wordBank;
-    this.props.dispatch(removeBank(classId, id));
+    dispatch(removeBank(classId, id));
   }
 
   handleDialogChange(e) {
@@ -69,46 +75,45 @@ class WordBanks extends Component {
       addingDialog: false,
       dialogError: false,
       editingDialog: false,
-      newWordBankName: ""
+      newWordBankName: ''
     });
   }
 
   render() {
-    const { wordbanks, classrooms } = this.props;
-    const { classroom } = this.props.match.params;
-    if (!classrooms[classroom]) console.log("handle non-existent class");
+    const { addingDialog, dialogError, editingDialog } = this.state;
+    const { wordbanks, classrooms, match, history } = this.props;
+    const { classroom } = match.params;
+    if (!classrooms[classroom]) console.error('handle non-existent class');
     const wordBankIds = classrooms[classroom]
       ? classrooms[classroom].wordbanks
       : [];
-    const wordBankList = wordBankIds.map(Id => {
-      return wordbanks[Id];
-    });
+    const wordBankList = wordBankIds.map(Id => wordbanks[Id]);
 
     return (
       <div>
         <ItemDialog
-          error={this.state.dialogError}
-          errorMsg={"This field cannot be blank."}
-          label={"Word Bank Name"}
+          error={dialogError}
+          errorMsg="This field cannot be blank."
+          label="Word Bank Name"
           onCancel={this.handleDialogClose}
           onChange={this.handleDialogChange}
           onClickOut={this.handleDialogClose}
           onSubmit={this.handleWordBankAdd}
-          open={this.state.addingDialog}
-          submitMsg={"Add"}
-          title={"Add Word Bank"}
+          open={addingDialog}
+          submitMsg="Add"
+          title="Add Word Bank"
         />
         <ItemDialog
-          error={this.state.dialogError}
-          errorMsg={"This field cannot be blank."}
-          label={"Word Bank Name"}
+          error={dialogError}
+          errorMsg="This field cannot be blank."
+          label="Word Bank Name"
           onCancel={this.handleDialogClose}
           onChange={this.handleDialogChange}
           onClickOut={this.handleDialogClose}
           onSubmit={this.handleWordBankEdit}
-          open={this.state.editingDialog}
-          submitMsg={"Change"}
-          title={"Edit WordBank"}
+          open={editingDialog}
+          submitMsg="Change"
+          title="Edit WordBank"
         />
         <ListItems
           edit={this.handleWordBankStartEdit}
@@ -117,7 +122,7 @@ class WordBanks extends Component {
             "It looks like you don't have any wordbanks added yet, click the add button to start adding wordbanks"
           }
           remove={this.handleWordBankRemove}
-          title={"Word Bank List"}
+          title="Word Bank List"
           generateTo={this.generateTo}
         />
         <AddButton
@@ -125,10 +130,10 @@ class WordBanks extends Component {
           color="primary"
           aria-label="Add"
           style={{
-            position: "absolute",
+            position: 'absolute',
             right: 10,
             bottom: 10,
-            outline: "none"
+            outline: 'none'
           }}
           onClick={() => this.setState({ addingDialog: true })}
         />
@@ -137,23 +142,21 @@ class WordBanks extends Component {
           color="primary"
           aria-label="Back"
           style={{
-            position: "absolute",
+            position: 'absolute',
             left: 10,
             bottom: 10,
-            outline: "none"
+            outline: 'none'
           }}
-          onClick={() => this.props.history.goBack()}
+          onClick={() => history.goBack()}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    classrooms: state.userData.classrooms,
-    wordbanks: state.userData.wordbanks
-  };
-};
+const mapStateToProps = state => ({
+  classrooms: state.userData.classrooms,
+  wordbanks: state.userData.wordbanks
+});
 
 export default withRouter(connect(mapStateToProps)(WordBanks));
