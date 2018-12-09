@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   Button,
@@ -7,8 +7,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle
-} from "@material-ui/core";
-import PropTypes from "prop-types";
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
 
 const ItemDialog = props => {
   const {
@@ -42,7 +42,7 @@ const ItemDialog = props => {
           fullWidth
           onChange={e => onChange(e)}
           error={error}
-          helperText={error ? errorMsg : ""}
+          helperText={error ? errorMsg : ''}
           value={value}
         />
       </DialogContent>
@@ -59,8 +59,14 @@ const ItemDialog = props => {
   );
 };
 
+ItemDialog.defaultProps = {
+  error: false,
+  errorMsg: '',
+  label: '',
+  text: ''
+};
+
 ItemDialog.propTypes = {
-  defaultValue: PropTypes.string,
   error: PropTypes.bool,
   errorMsg: PropTypes.string,
   label: PropTypes.string,

@@ -1,58 +1,54 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
-import Header from "./Header.js";
-import Homepage from "./Homepage.js";
-import Login from "./Login.js";
-import Signup from "./Signup.js";
-import Classrooms from "./containers/Classrooms.js";
-import Lost from "./Lost.js";
-import WordBanks from "./containers/WordBanks.js";
-import Words from "./containers/Words.js";
-import PrivateRoute from "./PrivateRoute.js";
-import "./VocaCoord.css";
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import Header from './Header';
+import Homepage from './Homepage';
+import Login from './Login';
+import Signup from './Signup';
+import Classrooms from './containers/Classrooms';
+import Lost from './Lost';
+import WordBanks from './containers/WordBanks';
+import Words from './containers/Words';
+import PrivateRoute from './PrivateRoute';
+import './VocaCoord.css';
 
-class Routing extends Component {
-  render() {
-    const { authenticated } = this.props.user;
-    return (
-      <Router>
-        <div className="App">
-          <Header authenticated={authenticated} />
-          <Switch>
-            <Route exact path="/" component={Homepage} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
-            <PrivateRoute
-              exact
-              path="/classrooms"
-              component={Classrooms}
-              authenticated={authenticated}
-            />
-            <PrivateRoute
-              exact
-              path="/classrooms/:classroom/wordbanks"
-              component={WordBanks}
-              authenticated={authenticated}
-            />
-            <PrivateRoute
-              exact
-              path="/classrooms/:classroom/wordbanks/:wordbank/words"
-              component={Words}
-              authenticated={authenticated}
-            />
-            <Route component={Lost} />
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    user: state.userData.user
-  };
+const Routing = ({ user }) => {
+  const { authenticated } = user;
+  return (
+    <Router>
+      <div className="App">
+        <Header authenticated={authenticated} />
+        <Switch>
+          <Route exact path="/" component={Homepage} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={Signup} />
+          <PrivateRoute
+            exact
+            path="/classrooms"
+            component={Classrooms}
+            authenticated={authenticated}
+          />
+          <PrivateRoute
+            exact
+            path="/classrooms/:classroom/wordbanks"
+            component={WordBanks}
+            authenticated={authenticated}
+          />
+          <PrivateRoute
+            exact
+            path="/classrooms/:classroom/wordbanks/:wordbank/words"
+            component={Words}
+            authenticated={authenticated}
+          />
+          <Route component={Lost} />
+        </Switch>
+      </div>
+    </Router>
+  );
 };
+
+const mapStateToProps = state => ({
+  user: state.userData.user
+});
 
 export default connect(mapStateToProps)(Routing);

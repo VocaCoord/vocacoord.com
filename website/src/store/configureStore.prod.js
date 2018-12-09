@@ -1,7 +1,7 @@
-import { createStore } from "redux";
-import { loadState, saveState } from "./localStorage";
-import throttle from "lodash/throttle";
-import rootReducer from "../reducers";
+import { createStore } from 'redux';
+import throttle from 'lodash/throttle';
+import { loadState, saveState } from './localStorage';
+import rootReducer from '../reducers';
 
 const configureStore = () => {
   const preloadedState = loadState();

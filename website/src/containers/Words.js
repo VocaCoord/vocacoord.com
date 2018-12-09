@@ -100,9 +100,7 @@ class Words extends Component {
     } = this.state;
     const { match, history, wordbanks, words } = this.props;
     const { wordbank } = match.params;
-    /* handle non-existent wordbank */
-    /* if (!wordbanks[wordbank]) console.log('handle non-existent wordbank'); */
-    /* use a redux selector for this in the future */
+    if (!wordbanks[wordbank]) console.error('handle non-existent wordbank');
     const wordIds = wordbanks[wordbank] ? wordbanks[wordbank].words : [];
     const wordList = wordIds.map(word => words[word]);
     return (

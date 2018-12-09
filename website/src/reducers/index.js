@@ -1,7 +1,8 @@
-import dotProp from "dot-prop-immutable";
-import { combineReducers } from "redux";
-import uuidv1 from "uuid/v1";
-import * as types from "../constants/ActionTypes";
+import dotProp from 'dot-prop-immutable';
+import { combineReducers } from 'redux';
+import uuidv1 from 'uuid/v1';
+import * as types from '../constants/ActionTypes';
+import { removeWords, removeWordBanks } from '../utils/index';
 
 const initialState = {
   classrooms: {},
@@ -86,7 +87,7 @@ function userDataReducer(state = initialState, action) {
 
     case types.EDIT_WORD: {
       const { id, name, definition, image } = action.payload;
-      let newState = dotProp.get(state, "", state);
+      let newState = dotProp.get(state, '', state);
       if (name) newState = dotProp.set(newState, `words.${id}.name`, name);
       if (definition)
         newState = dotProp.set(newState, `words.${id}.definition`, definition);
@@ -120,7 +121,7 @@ function userDataReducer(state = initialState, action) {
         email,
         data
       } = action.payload;
-      let newUser = {
+      const newUser = {
         authenticated,
         firstName,
         lastName,
@@ -140,25 +141,6 @@ function userDataReducer(state = initialState, action) {
       return state;
   }
 }
-
-const removeWordBanks = (state, classId) => {
-  const wordBanks = dotProp.get(state, `classrooms.${classId}.wordbanks`);
-  let newState = dotProp.get(state, "", state);
-  for (const wordBank of wordBanks) {
-    newState = removeWords(newState, wordBank);
-    newState = dotProp.delete(newState, `wordbanks.${wordBank}`);
-  }
-  return newState;
-};
-
-const removeWords = (state, wordBankId) => {
-  const words = dotProp.get(state, `wordbanks.${wordBankId}.words`);
-  let newState = dotProp.get(state, "", state);
-  for (const word of words) {
-    newState = dotProp.delete(newState, `words.${word}`);
-  }
-  return newState;
-};
 
 /*
 const entities = {

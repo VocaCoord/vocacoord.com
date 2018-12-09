@@ -1,9 +1,9 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import { createLogger } from "redux-logger";
-import { loadState, saveState } from "./localStorage";
-import throttle from "lodash/throttle";
-import rootReducer from "../reducers";
-import DevTools from "../containers/DevTools";
+import { createStore, applyMiddleware, compose } from 'redux';
+import { createLogger } from 'redux-logger';
+import throttle from 'lodash/throttle';
+import { loadState, saveState } from './localStorage';
+import rootReducer from '../reducers';
+import DevTools from '../containers/DevTools';
 
 const configureStore = () => {
   const preloadedState = loadState();
@@ -24,7 +24,7 @@ const configureStore = () => {
   );
 
   if (module.hot) {
-    module.hot.accept("../reducers", () => {
+    module.hot.accept('../reducers', () => {
       store.replaceReducer(rootReducer);
     });
   }
