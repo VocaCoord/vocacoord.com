@@ -1,7 +1,7 @@
-import React from "react";
-import Enzyme, { shallow } from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import ItemDialog from "../../components/Dialog.js";
+import React from 'react';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import ItemDialog from './Dialog';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -11,12 +11,12 @@ const globalProps = {
   onClickOut: () => {},
   onSubmit: () => {},
   open: false,
-  submitMsg: "",
-  title: ""
+  submitMsg: '',
+  title: ''
 };
 
-describe("Dialog Component", () => {
-  it("renders without crashing", () => {
+describe('Dialog Component', () => {
+  it('renders without crashing', () => {
     const wrapper = shallow(<ItemDialog {...globalProps} />);
     expect(wrapper.exists()).toBe(true);
   });
