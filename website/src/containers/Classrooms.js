@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ItemDialog from '../components/Dialog';
-import { AddButton } from '../components/Buttons';
 import ListItems from '../components/ListItems';
 import { apiURL } from '../constants/Assorted';
 import { addClass, editClass, removeClass } from '../actions';
@@ -12,7 +11,6 @@ class Classrooms extends Component {
     super(props);
     this.state = {
       addingDialog: false,
-      creatingClass: false,
       currentClass: {},
       dialogError: false,
       editingDialog: false,
@@ -54,7 +52,6 @@ class Classrooms extends Component {
         const name = newClassName;
         dispatch(addClass(code, name));
         this.setState({
-          creatingClass: false,
           newClassName: ''
         });
       });
@@ -91,18 +88,12 @@ class Classrooms extends Component {
       dialogError: false,
       addingDialog: false,
       editingDialog: false,
-      creatingClass: false,
       newClassName: ''
     });
   }
 
   render() {
-    const {
-      addingDialog,
-      dialogError,
-      editingDialog,
-      creatingClass
-    } = this.state;
+    const { addingDialog, dialogError, editingDialog } = this.state;
     const { classrooms } = this.props;
     const classList = Object.keys(classrooms).map(key => classrooms[key]);
     return (
@@ -132,29 +123,13 @@ class Classrooms extends Component {
           title="Edit Classroom"
         />
         <ListItems
+          add={() => this.setState({ addingDialog: true })}
           edit={this.handleClassroomStartEdit}
           list={classList}
-          missing={
-            "It looks like you don't have any classrooms yet, click the add button to create a classroom"
-          }
+          name="classroom"
           remove={this.handleClassroomRemove}
           title="Classroom List"
           generateTo={this.generateTo}
-        />
-        <AddButton
-          variant="fab"
-          color="primary"
-          aria-label="Add"
-          style={{
-            position: 'absolute',
-            right: 10,
-            bottom: 10,
-            outline: 'none'
-          }}
-          onClick={() =>
-            this.setState({ addingDialog: true, creatingClass: true })
-          }
-          disabled={creatingClass}
         />
       </div>
     );

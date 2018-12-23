@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
-import { AddButton, BackButton } from '../components/Buttons';
+import { BackButton } from '../components/Buttons';
 import { addBank, editBank, removeBank } from '../actions';
 
 class WordBanks extends Component {
@@ -116,26 +116,13 @@ class WordBanks extends Component {
           title="Edit WordBank"
         />
         <ListItems
+          add={() => this.setState({ addingDialog: true })}
           edit={this.handleWordBankStartEdit}
           list={wordBankList}
-          missing={
-            "It looks like you don't have any wordbanks added yet, click the add button to start adding wordbanks"
-          }
+          name="word bank"
           remove={this.handleWordBankRemove}
           title="Word Bank List"
           generateTo={this.generateTo}
-        />
-        <AddButton
-          variant="fab"
-          color="primary"
-          aria-label="Add"
-          style={{
-            position: 'absolute',
-            right: 10,
-            bottom: 10,
-            outline: 'none'
-          }}
-          onClick={() => this.setState({ addingDialog: true })}
         />
         <BackButton
           variant="fab"

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { TextField, DialogContent } from '@material-ui/core';
 import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
-import { AddButton, BackButton } from '../components/Buttons';
+import { BackButton } from '../components/Buttons';
 import { addWord, editWord, removeWord } from '../actions';
 
 class Words extends Component {
@@ -176,26 +176,13 @@ class Words extends Component {
           </DialogContent>
         </ItemDialog>
         <ListItems
+          add={() => this.setState({ addingDialog: true })}
           edit={this.handleWordStartEdit}
           list={wordList}
-          missing={
-            "It looks like you don't have any words added yet, click the add button to start adding words"
-          }
+          name="word"
           remove={this.handleWordRemove}
           title="Word List"
           generateTo={null}
-        />
-        <AddButton
-          variant="fab"
-          color="primary"
-          aria-label="Add"
-          style={{
-            position: 'absolute',
-            right: 10,
-            bottom: 10,
-            outline: 'none'
-          }}
-          onClick={() => this.setState({ addingDialog: true })}
         />
         <BackButton
           variant="fab"
