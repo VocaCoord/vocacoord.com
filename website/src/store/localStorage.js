@@ -1,8 +1,6 @@
-import { apiURL } from '../constants/Assorted';
-
 export const loadState = () => {
   try {
-    const serializedState = localStorage.getItem('state');
+    const serializedState = localStorage.getItem('https://vocacoord.com:state');
     if (serializedState === null) return undefined;
     return JSON.parse(serializedState);
   } catch (err) {
@@ -13,23 +11,7 @@ export const loadState = () => {
 export const saveState = state => {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
-    if (state.userData.user && state.userData.user.email) {
-      fetch(`${apiURL}/sync`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user: state.userData.user,
-          data: {
-            classrooms: state.userData.classrooms,
-            wordbanks: state.userData.wordbanks,
-            words: state.userData.words
-          }
-        })
-      });
-    }
+    localStorage.setItem('https://vocacoord.com:state', serializedState);
   } catch (err) {
     // ignore errors for now
   }

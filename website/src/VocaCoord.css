@@ -1,49 +1,52 @@
 .App-logo {
-  height: 50px;
-  float: left;
-  transform: translate(0px, -8px);
-  pointer-events: none;
+    height: 50px;
+    float: left;
+    transform: translate(0px, -8px);
+    pointer-events: none;
 }
 
 .App-logo-text {
-  float: left;
-  transform: translate(-25px, 0px);
+    float: left;
+    transform: translate(-25px, 0px);
 }
 
 .App-header {
-  background-color: #222;
-  height: 80px;
-  padding: 20px;
-  color: white;
+    z-index: 2;
+    background-color: #222;
+    height: 80px;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    width: 100%;
 }
 
 .App-login-buttons {
-  float: right;
+    float: right;
 }
 
 .App-header-info {
-  float: right;
+    float: right;
 }
 
 .App-slide {
-  transform: translate(0px, -150px);
-  z-index: -1;
-  position: absolute;
-  pointer-events: none;
+    transform: translate(0px, -150px);
+    z-index: -1;
+    position: absolute;
+    pointer-events: none;
 }
 
 .App-login {
-  transform: translate(175px, 300px);
-  max-width: 340px;
-  min-width: 340px;
+    transform: translate(175px, 300px);
+    max-width: 340px;
+    min-width: 340px;
 }
 
 .App-lost-button {
-  transform: translate(175px, 360px);
-  max-width: 555px;
-  min-width: 555px;
+    transform: translate(175px, 360px);
+    max-width: 555px;
+    min-width: 555px;
 }
 
 .App-spinner {
-  transform: translate(141px, 10px);
+    transform: translate(141px, 10px);
 }
