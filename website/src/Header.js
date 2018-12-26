@@ -3,7 +3,7 @@ import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { logOutUser } from './actions/index';
-import logo from './assets/VCLogo.svg';
+import VCLogo from './components/Icons';
 import './VocaCoord.css';
 
 class Header extends Component {
@@ -50,16 +50,15 @@ class Header extends Component {
     const { authenticated } = this.props;
     const { width } = this.state;
     return (
-      <div className="App-header">
-        <Link
-          to="/"
-          style={{
-            color: 'white'
-          }}
-        >
-          <img src={logo} className="App-logo" alt="logo" />
-          {width > 510 && <h1 className="VC-logo-text">ocaCoord</h1>}
-        </Link>
+      <div className="header">
+        <div className="header__logo">
+          <Link to="/" className="link">
+            <div className="header__logo--svg">
+              <VCLogo />
+            </div>
+            {width > 510 && <h1 className="header__logo--text">ocaCoord</h1>}
+          </Link>
+        </div>
         {authenticated ? (
           <div className="App-header-info">
             <Link to="/classrooms">

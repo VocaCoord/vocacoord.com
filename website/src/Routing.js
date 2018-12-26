@@ -10,6 +10,7 @@ import Lost from './Lost';
 import WordBanks from './containers/WordBanks';
 import Words from './containers/Words';
 import PrivateRoute from './PrivateRoute';
+import Footer from './Footer';
 import './VocaCoord.css';
 
 const Routing = ({ user }) => {
@@ -42,6 +43,7 @@ const Routing = ({ user }) => {
           />
           <Route component={Lost} />
         </Switch>
+        <Footer />
       </div>
     </Router>
   );
