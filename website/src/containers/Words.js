@@ -5,6 +5,7 @@ import { TextField, DialogContent } from '@material-ui/core';
 import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
 import { BackButton } from '../components/Buttons';
+import Dictaphone from '../components/Dictaphone';
 import { addWord, editWord, removeWord } from '../actions';
 
 class Words extends Component {
@@ -196,6 +197,7 @@ class Words extends Component {
           }}
           onClick={() => history.goBack()}
         />
+        <Dictaphone words={words} wordbanks={wordbanks} wordBankId={wordbank} />
       </div>
     );
   }
