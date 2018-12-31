@@ -4,10 +4,10 @@
   "description": "VocaCoord Backend",
   "scripts": {
     "start": "node server",
-    "heroku-postbuild": "cd website/ && yarn install && yarn run build",
-    "dev": "concurrently \"npm run-script dev:server\" \"npm run-script dev:client\"",
+    "heroku-postbuild": "cd website/ && yarn && yarn build",
+    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:server": "nodemon server",
-    "dev:client": "cd .\\website\\ && npm run-script start"
+    "dev:client": "cd .\\website\\ && yarn start"
   },
   "cacheDirectories": [
     "node_modules",

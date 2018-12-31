@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes';
 
-export const addClass = (code, name) => ({
-  type: types.ADD_CLASS,
+export const createClass = (code, name) => ({
+  type: types.CREATE_CLASS,
   payload: { code, name }
 });
 
@@ -15,8 +15,8 @@ export const removeClass = id => ({
   payload: { id }
 });
 
-export const addBank = (classId, name) => ({
-  type: types.ADD_BANK,
+export const createBank = (classId, name) => ({
+  type: types.CREATE_BANK,
   payload: { classId, name }
 });
 
@@ -30,8 +30,8 @@ export const removeBank = (classId, id) => ({
   payload: { classId, id }
 });
 
-export const addWord = (wordBankId, word) => ({
-  type: types.ADD_WORD,
+export const createWord = (wordBankId, word) => ({
+  type: types.CREATE_WORD,
   payload: { wordBankId, ...word }
 });
 

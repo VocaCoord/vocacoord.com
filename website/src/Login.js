@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Button } from 'reactstrap';
 import { PulseLoader } from 'react-spinners';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import './VocaCoord.css';
 import { apiURL } from './constants/Assorted';
@@ -86,4 +85,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(connect()(Login));
+export default withRouter(Login);

@@ -53,7 +53,7 @@ class Dictaphone extends Component {
         style={{
           position: 'absolute',
           right: 10,
-          bottom: 10,
+          bottom: 50,
           outline: 'none'
         }}
       >

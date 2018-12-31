@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { logOutUser } from './actions/index';
-import VCLogo from './components/Icons';
-import './VocaCoord.css';
+import { logOutUser } from '../actions/index';
+import VCLogo from './Icons';
+import '../VocaCoord.css';
 
 class Header extends Component {
   constructor(props) {
@@ -85,4 +84,4 @@ class Header extends Component {
   }
 }
 
-export default connect()(Header);
+export default Header;

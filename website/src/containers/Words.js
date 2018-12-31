@@ -6,7 +6,7 @@ import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
 import { BackButton } from '../components/Buttons';
 import Dictaphone from '../components/Dictaphone';
-import { addWord, editWord, removeWord } from '../actions';
+import { createWord, editWord, removeWord } from '../actions';
 
 class Words extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class Words extends Component {
     const { wordbank } = match.params;
     const { name, definition, image } = currentWord;
     const word = { name, definition, image };
-    dispatch(addWord(wordbank, word));
+    dispatch(createWord(wordbank, word));
     this.setState({
       addingDialog: false,
       currentWord: {
@@ -192,7 +192,7 @@ class Words extends Component {
           style={{
             position: 'absolute',
             left: 10,
-            bottom: 10,
+            bottom: 50,
             outline: 'none'
           }}
           onClick={() => history.goBack()}
