@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
 import { BackButton } from '../components/Buttons';
-import { addBank, editBank, removeBank } from '../actions';
+import { createBank, editBank, removeBank } from '../actions';
 
 class WordBanks extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class WordBanks extends Component {
     if (newWordBankName === '') return this.setState({ dialogError: true });
 
     const { classroom } = match.params;
-    dispatch(addBank(classroom, newWordBankName));
+    dispatch(createBank(classroom, newWordBankName));
     this.setState({ addingDialog: false, newWordBankName: '' });
   }
 
@@ -131,7 +131,7 @@ class WordBanks extends Component {
           style={{
             position: 'absolute',
             left: 10,
-            bottom: 10,
+            bottom: 50,
             outline: 'none'
           }}
           onClick={() => history.goBack()}

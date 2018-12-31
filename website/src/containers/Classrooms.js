@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom';
 import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
 import { apiURL } from '../constants/Assorted';
-import { addClass, editClass, removeClass } from '../actions';
+import { createClass, editClass, removeClass } from '../actions';
+import { classSelector } from '../selectors';
 
 class Classrooms extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Classrooms extends Component {
       .then(json => {
         const code = json.classID;
         const name = newClassName;
-        dispatch(addClass(code, name));
+        dispatch(createClass(code, name));
         this.setState({
           newClassName: ''
         });
@@ -95,7 +96,6 @@ class Classrooms extends Component {
   render() {
     const { addingDialog, dialogError, editingDialog } = this.state;
     const { classrooms } = this.props;
-    const classList = Object.keys(classrooms).map(key => classrooms[key]);
     return (
       <div>
         <ItemDialog
@@ -125,7 +125,7 @@ class Classrooms extends Component {
         <ListItems
           add={() => this.setState({ addingDialog: true })}
           edit={this.handleClassroomStartEdit}
-          list={classList}
+          list={classrooms}
           name="classroom"
           remove={this.handleClassroomRemove}
           title="Classroom List"
@@ -136,11 +136,8 @@ class Classrooms extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const classrooms = state.userData.classrooms || {};
-  return {
-    classrooms
-  };
-};
+const mapStateToProps = state => ({
+  classrooms: classSelector(state)
+});
 
 export default withRouter(connect(mapStateToProps)(Classrooms));

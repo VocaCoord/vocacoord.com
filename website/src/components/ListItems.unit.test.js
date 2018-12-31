@@ -5,10 +5,14 @@ import ListItems from './ListItems';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const pathname = '';
+
 const globalProps = {
+  add: () => {},
   edit: () => {},
+  generateTo: () => ({ pathname }),
   list: [{}],
-  missing: '',
+  name: '',
   remove: () => {},
   title: ''
 };

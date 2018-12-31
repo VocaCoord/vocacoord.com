@@ -14,11 +14,11 @@ describe('Class Action Creators', () => {
       .toUpperCase();
     const name = 'Test classroom';
     const expectedAction = {
-      type: types.ADD_CLASS,
+      type: types.CREATE_CLASS,
       payload: { code, name }
     };
 
-    expect(actions.addClass(code, name)).toEqual(expectedAction);
+    expect(actions.createClass(code, name)).toEqual(expectedAction);
   });
 
   it('should create an action to edit a classroom', () => {
@@ -48,11 +48,11 @@ describe('Word Bank Action Creators', () => {
     const classId = uuidv1();
     const name = 'Test word bank';
     const expectedAction = {
-      type: types.ADD_BANK,
+      type: types.CREATE_BANK,
       payload: { classId, name }
     };
 
-    expect(actions.addBank(classId, name)).toEqual(expectedAction);
+    expect(actions.createBank(classId, name)).toEqual(expectedAction);
   });
 
   it('should create an action to edit a word bank', () => {
@@ -87,11 +87,11 @@ describe('Word Action Creators', () => {
       image: 'Test word image'
     };
     const expectedAction = {
-      type: types.ADD_WORD,
+      type: types.CREATE_WORD,
       payload: { wordBankId, ...word }
     };
 
-    expect(actions.addWord(wordBankId, word)).toEqual(expectedAction);
+    expect(actions.createWord(wordBankId, word)).toEqual(expectedAction);
   });
 
   it('should create an action to edit a word', () => {

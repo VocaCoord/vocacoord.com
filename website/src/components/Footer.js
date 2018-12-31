@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './VocaCoord.css';
+import '../VocaCoord.css';
 
 const Footer = () => (
   <div className="footer">
