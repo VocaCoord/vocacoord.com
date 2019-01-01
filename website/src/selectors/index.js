@@ -14,12 +14,30 @@ export const classSelector = createSelector(
   ormCreateSelector(orm, session => session.Classroom.all().toRefArray())
 );
 
+const classIdSelector = (state, props) => {
+  const { match } = props;
+  const { classroom } = match.params;
+  return classroom;
+};
+
 export const wordbankSelector = createSelector(
   ormSelector,
-  ormCreateSelector(orm, session => session.Wordbank.all().toRefArray())
+  classIdSelector,
+  ormCreateSelector(orm, (session, classId) =>
+    session.Wordbank.filter({ classId }).toRefArray()
+  )
 );
+
+const bankIdSelector = (state, props) => {
+  const { match } = props;
+  const { wordbank } = match.params;
+  return wordbank;
+};
 
 export const wordSelector = createSelector(
   ormSelector,
-  ormCreateSelector(orm, session => session.Word.all().toRefArray())
+  bankIdSelector,
+  ormCreateSelector(orm, (session, bankId) =>
+    session.Word.filter({ bankId }).toRefArray()
+  )
 );

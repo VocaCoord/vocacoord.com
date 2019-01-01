@@ -30,9 +30,9 @@ export const removeBank = (classId, id) => ({
   payload: { classId, id }
 });
 
-export const createWord = (wordBankId, word) => ({
+export const createWord = (bankId, word) => ({
   type: types.CREATE_WORD,
-  payload: { wordBankId, ...word }
+  payload: { bankId, ...word }
 });
 
 export const editWord = (id, word) => ({
@@ -40,9 +40,9 @@ export const editWord = (id, word) => ({
   payload: { id, ...word }
 });
 
-export const removeWord = (wordBankId, id) => ({
+export const removeWord = (bankId, id) => ({
   type: types.REMOVE_WORD,
-  payload: { wordBankId, id }
+  payload: { bankId, id }
 });
 
 /* TODO */
