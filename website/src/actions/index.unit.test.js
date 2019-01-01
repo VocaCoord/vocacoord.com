@@ -80,7 +80,7 @@ describe('Word Bank Action Creators', () => {
 
 describe('Word Action Creators', () => {
   it('should create an action to add a word', () => {
-    const wordBankId = uuidv1();
+    const bankId = uuidv1();
     const word = {
       name: 'Test word',
       definition: 'Test word definition',
@@ -88,10 +88,10 @@ describe('Word Action Creators', () => {
     };
     const expectedAction = {
       type: types.CREATE_WORD,
-      payload: { wordBankId, ...word }
+      payload: { bankId, ...word }
     };
 
-    expect(actions.createWord(wordBankId, word)).toEqual(expectedAction);
+    expect(actions.createWord(bankId, word)).toEqual(expectedAction);
   });
 
   it('should create an action to edit a word', () => {
@@ -110,14 +110,14 @@ describe('Word Action Creators', () => {
   });
 
   it('should create an action to remove a word', () => {
-    const wordBankId = uuidv1();
+    const bankId = uuidv1();
     const id = uuidv1();
     const expectedAction = {
       type: types.REMOVE_WORD,
-      payload: { wordBankId, id }
+      payload: { bankId, id }
     };
 
-    expect(actions.removeWord(wordBankId, id)).toEqual(expectedAction);
+    expect(actions.removeWord(bankId, id)).toEqual(expectedAction);
   });
 });
 

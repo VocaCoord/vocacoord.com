@@ -7,6 +7,7 @@ import ListItems from '../components/ListItems';
 import { BackButton } from '../components/Buttons';
 import Dictaphone from '../components/Dictaphone';
 import { createWord, editWord, removeWord } from '../actions';
+import { wordSelector } from '../selectors';
 
 class Words extends Component {
   constructor(props) {
@@ -99,11 +100,8 @@ class Words extends Component {
       dialogError,
       editingDialog
     } = this.state;
-    const { match, history, wordbanks, words } = this.props;
-    const { wordbank } = match.params;
-    if (!wordbanks[wordbank]) console.error('handle non-existent wordbank');
-    const wordIds = wordbanks[wordbank] ? wordbanks[wordbank].words : [];
-    const wordList = wordIds.map(word => words[word]);
+    const { history, words = [] } = this.props;
+
     return (
       <div>
         <ItemDialog
@@ -179,7 +177,7 @@ class Words extends Component {
         <ListItems
           add={() => this.setState({ addingDialog: true })}
           edit={this.handleWordStartEdit}
-          list={wordList}
+          list={words}
           name="word"
           remove={this.handleWordRemove}
           title="Word List"
@@ -197,15 +195,14 @@ class Words extends Component {
           }}
           onClick={() => history.goBack()}
         />
-        <Dictaphone words={words} wordbanks={wordbanks} wordBankId={wordbank} />
+        <Dictaphone words={words} />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  wordbanks: state.userData.wordbanks,
-  words: state.userData.words
+const mapStateToProps = (state, props) => ({
+  words: wordSelector(state, props)
 });
 
 export default withRouter(connect(mapStateToProps)(Words));

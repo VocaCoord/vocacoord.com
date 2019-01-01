@@ -19,15 +19,12 @@ class Dictaphone extends Component {
     const lastWords = lastSpeech.toLowerCase().split(' ');
     const nextWords = nextSpeech.toLowerCase().split(' ');
 
-    const { wordbanks, words, wordBankId } = props;
-    const wordIds = wordbanks[wordBankId] ? wordbanks[wordBankId].words : [];
-    const wordbank = wordIds.map(wordId => words[wordId]);
-    const wordBankWords = wordbank.map(word => word.name.toLowerCase());
+    const words = props.words.map(word => word.name.toLowerCase()) || [];
 
     nextWords.forEach((nextWord, i) => {
       if (lastWords[i] === nextWord) return;
-      const wordIndex = wordBankWords.indexOf(nextWord);
-      if (wordIndex !== -1) console.error('publishing', wordbank[wordIndex]);
+      const wordIndex = words.indexOf(nextWord);
+      if (wordIndex !== -1) console.error('publishing', words[wordIndex]);
     });
 
     if (resetSpeech) resetSpeech();

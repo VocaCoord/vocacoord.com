@@ -5,6 +5,7 @@ import ItemDialog from '../components/Dialog';
 import ListItems from '../components/ListItems';
 import { BackButton } from '../components/Buttons';
 import { createBank, editBank, removeBank } from '../actions';
+import { wordbankSelector } from '../selectors';
 
 class WordBanks extends Component {
   constructor(props) {
@@ -81,13 +82,7 @@ class WordBanks extends Component {
 
   render() {
     const { addingDialog, dialogError, editingDialog } = this.state;
-    const { wordbanks, classrooms, match, history } = this.props;
-    const { classroom } = match.params;
-    if (!classrooms[classroom]) console.error('handle non-existent class');
-    const wordBankIds = classrooms[classroom]
-      ? classrooms[classroom].wordbanks
-      : [];
-    const wordBankList = wordBankIds.map(Id => wordbanks[Id]);
+    const { wordbanks = [], history } = this.props;
 
     return (
       <div>
@@ -118,7 +113,7 @@ class WordBanks extends Component {
         <ListItems
           add={() => this.setState({ addingDialog: true })}
           edit={this.handleWordBankStartEdit}
-          list={wordBankList}
+          list={wordbanks}
           name="word bank"
           remove={this.handleWordBankRemove}
           title="Word Bank List"
@@ -141,9 +136,8 @@ class WordBanks extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  classrooms: state.userData.classrooms,
-  wordbanks: state.userData.wordbanks
+const mapStateToProps = (state, props) => ({
+  wordbanks: wordbankSelector(state, props)
 });
 
 export default withRouter(connect(mapStateToProps)(WordBanks));

@@ -19,7 +19,7 @@ import {
 
 class Classroom extends Model {
   // eslint-disable-next-line no-shadow
-  static reducer(action, Classroom) {
+  static reducer(action, Classroom, session) {
     const { payload, type } = action;
     switch (type) {
       case CREATE_CLASS:
@@ -32,6 +32,8 @@ class Classroom extends Model {
 
       case REMOVE_CLASS:
         Classroom.withId(payload.id).delete();
+        session.Wordbank.filter({ classId: null }).delete();
+        session.Word.filter({ bankId: null }).delete();
         break;
 
       default:
@@ -45,7 +47,10 @@ Classroom.fields = {
   id: attr({ getDefault: () => uuidv1() }),
   name: attr(),
   code: attr(),
-  user: fk('User', 'classrooms')
+  userId: fk({
+    to: 'User',
+    relatedName: 'classrooms'
+  })
 };
 
 export default Classroom;
