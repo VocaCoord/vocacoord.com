@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Header from './components/Header';
-import Homepage from './Homepage';
-import Login from './Login';
-import Signup from './Signup';
-import Classrooms from './containers/Classrooms';
-import Lost from './Lost';
-import WordBanks from './containers/WordBanks';
-import Words from './containers/Words';
+import { Header } from './containers/Header';
+import { Homepage } from './components/Homepage/index';
+import { Login } from './components/Login';
+import { Signup } from './components/Signup';
+import { Classrooms } from './containers/Classrooms';
+import { Lost } from './components/Lost';
+import { WordBanks } from './containers/WordBanks';
+import { Words } from './containers/Words';
 import PrivateRoute from './PrivateRoute';
-import Footer from './components/Footer';
+import { Footer } from './components/Footer';
 import { userSelector } from './selectors';
 import './VocaCoord.css';
 
