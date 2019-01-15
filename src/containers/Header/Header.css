@@ -1,0 +1,30 @@
+.header {
+  background-color: #222;
+  height: 80px;
+  padding: 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+.header__logo {
+  float: left;
+}
+
+.header__logo--svg {
+  float: left;
+  transform: translate(0, -4px);
+}
+
+.header__logo--text {
+  float: right;
+  transform: translate(-8px, 6px);
+}
+
+.App-login-buttons {
+  float: right;
+}
+
+.App-header-info {
+  float: right;
+}

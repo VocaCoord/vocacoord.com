@@ -1,57 +1,81 @@
 {
-  "name": "vocacoord-server",
+  "name": "vocacoord-website",
   "version": "0.2.0",
-  "description": "VocaCoord Backend",
-  "scripts": {
-    "start": "node server",
-    "heroku-postbuild": "cd website/ && yarn && yarn build",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
-    "dev:server": "nodemon server",
-    "dev:client": "cd .\\website\\ && yarn start"
-  },
-  "cacheDirectories": [
-    "node_modules",
-    "website/node_modules"
-  ],
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "clusterws": "^3.2.0",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
-    "express-sslify": "^1.2.0",
-    "helmet": "^3.14.0",
-    "mongodb": "^3.1.8",
-    "morgan": "^1.9.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/VocaCoord/Heroku.git"
-  },
-  "keywords": [
-    "node",
-    "heroku",
-    "react"
-  ],
-  "license": "MIT",
+  "private": true,
   "devDependencies": {
-    "concurrently": "^4.0.1",
+    "babel-eslint": "9.0.0",
+    "eslint": "5.6.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-json": "^1.3.2",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
     "husky": "^1.1.3",
     "lint-staged": "^8.0.4",
-    "nodemon": "^1.18.5",
-    "prettier": "^1.15.2"
+    "prettier": "^1.15.2",
+    "redux-devtools": "^3.4.1",
+    "redux-devtools-dock-monitor": "^1.1.3",
+    "redux-devtools-log-monitor": "^1.4.0",
+    "redux-logger": "^3.0.6",
+    "source-map-explorer": "^1.6.0"
   },
-  "nodemonConfig": {
-    "watch": "server/"
+  "dependencies": {
+    "@material-ui/core": "^3.3.1",
+    "@material-ui/icons": "^3.0.1",
+    "bootstrap": "^4.1.3",
+    "clusterws-client-js": "^3.2.0",
+    "dotenv": "^6.2.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "firebase": "^5.7.3",
+    "lodash": "^4.17.11",
+    "normalizr": "^3.3.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-firebaseui": "^3.1.2",
+    "react-redux": "^5.1.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.1.2",
+    "react-scrollbars-custom": "^3.1.3",
+    "react-speech-recognition": "^1.0.7",
+    "react-spinners": "^0.4.7",
+    "reactstrap": "^6.5.0",
+    "redux": "^4.0.1",
+    "redux-orm": "^0.12.2",
+    "reselect": "^4.0.0",
+    "uuid": "^3.3.2"
   },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "test": "react-scripts test --env=jsdom --verbose",
+    "test:staged": "react-scripts --bail --findRelatedTests",
+    "coverage": "yarn test --coverage",
+    "eject": "react-scripts eject",
+    "deploy": "yarn build && firebase deploy"
+  },
+  "proxy": "http://localhost:5000",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
+    "*.{js,json,md}": [
       "prettier --write",
+      "eslint --fix",
+      "npm run test:staged",
       "git add"
     ]
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
