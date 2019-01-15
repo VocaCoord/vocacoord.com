@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import SpeechRecognition from 'react-speech-recognition';
 import { Fab } from '@material-ui/core';
-import { Mic as MicOnIcon, MicOff as MicOffIcon } from '@material-ui/icons';
+import {
+  Mic as MicOnIcon,
+  MicOff as MicOffIcon,
+  Autorenew as ConnectingIcon
+} from '@material-ui/icons';
 import ClusterWS from 'clusterws-client-js';
 
 class Dictaphone extends Component {
@@ -12,7 +16,8 @@ class Dictaphone extends Component {
       // eslint-disable-next-line react/no-unused-state
       lastSpeech: '',
       // eslint-disable-next-line react/no-unused-state
-      channel: null
+      channel: null,
+      connecting: true
     };
   }
 
@@ -51,7 +56,7 @@ class Dictaphone extends Component {
     this.socket.on('connect', () => {
       const channel = this.socket.subscribe(classCode);
       // eslint-disable-next-line react/no-unused-state
-      this.setState({ channel });
+      this.setState({ channel, connecting: false });
     });
   };
 
@@ -67,7 +72,10 @@ class Dictaphone extends Component {
       startListening
     } = this.props;
 
+    const { connecting } = this.state;
+
     const disabled = !browserSupportsSpeechRecognition;
+    const micIcon = listening ? <MicOnIcon /> : <MicOffIcon />;
 
     return (
       <Fab
@@ -81,7 +89,11 @@ class Dictaphone extends Component {
           outline: 'none'
         }}
       >
-        {disabled || listening ? <MicOffIcon /> : <MicOnIcon />}
+        {connecting ? (
+          <ConnectingIcon className="classroom--spinner" />
+        ) : (
+          micIcon
+        )}
       </Fab>
     );
   }
