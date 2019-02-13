@@ -1,26 +1,26 @@
-# Node build artifacts
-node_modules
-npm-debug.log
-
-# Local development
-*.env
-*.dev
+# OS
+*.log
+**/*.log
 .DS_Store
-.vscode
+**/.DS_Store
 
-# Docker
-Dockerfile
-docker-compose.yml
+# Dependencies
+**/node_modules
 
-# testing
-coverage
-
-# production
+# React App
 build
-
-# misc
-.DS_Store
+src/config.js
 .env
-npm-debug.log
 
-src/env.js
+# Functions
+functions/etc
+functions/dist
+functions/.runtimeconfig.json
+functions/coverage
+
+# Tests
+cypress/videos
+cypress/screenshots
+cypress.env.json
+cypress/config.json
+serviceAccount.json
