@@ -1,30 +1,33 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import firebase from 'firebase';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Root } from './components/Root';
-import configureStore from './store/configureStore';
-import './index.css';
-import {
-  FB_API_KEY,
-  FB_AUTH_DOMAIN,
-  FB_DB_URL,
-  FB_PROJECT_ID,
-  FB_MESSAGING_ID,
-  FB_STORAGE
-} from './env';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { initScripts } from './utils'
+import createStore from './store/createStore'
+import { version } from '../package.json'
+import { env } from './config'
+import './index.css'
 
-const config = {
-  apiKey: FB_API_KEY,
-  authDomain: FB_AUTH_DOMAIN,
-  databaseURL: FB_DB_URL,
-  projectId: FB_PROJECT_ID,
-  storageBucket: FB_STORAGE,
-  messagingSenderId: FB_MESSAGING_ID
-};
+// import * as serviceWorker from './serviceWorker'
+import App from './containers/App'
 
-firebase.initializeApp(config);
+// Window Variables
+// ------------------------------------
+window.version = version
+window.env = env
+initScripts()
+// Store Initialization
+// ------------------------------------
+const initialState = window.___INITIAL_STATE__ || {
+  firebase: { authError: null }
+}
+const store = createStore(initialState)
+const routes = require('./routes/index').default(store)
 
-const store = configureStore();
+ReactDOM.render(
+  <App store={store} routes={routes} />,
+  document.getElementById('root')
+)
 
-ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+// serviceWorker.unregister()
