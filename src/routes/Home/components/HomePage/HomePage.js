@@ -1,12 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import {
-  ACCOUNT_PATH,
-  LIST_PATH,
-  LOGIN_PATH,
-  SIGNUP_PATH
-} from 'constants/paths'
+import { ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH } from 'constants/paths'
 
 const authWrapperUrl = 'https://github.com/mjrussell/redux-auth-wrapper'
 const reactRouterUrl = 'https://github.com/ReactTraining/react-router'
@@ -41,12 +36,9 @@ const Home = ({ classes }) => (
         <h4>Logged Out</h4>
         <span>
           User is redirected to <pre>/login</pre> if not authenticated and
-          trying to vist:
+          trying to visit:
         </span>
         <ul>
-          <li>
-            <Link to={LIST_PATH}>Projects</Link>
-          </li>
           <li>
             <Link to={ACCOUNT_PATH}>Account</Link>
           </li>
@@ -55,8 +47,8 @@ const Home = ({ classes }) => (
       <div className={classes.section}>
         <h4>Logged In</h4>
         <span>
-          User is redirected to <pre>/projects</pre> if authenticated and trying
-          to vist:
+          User is redirected to <pre>/classrooms</pre> if authenticated and
+          trying to visit:
         </span>
         <ul>
           <li>
@@ -91,7 +83,7 @@ const Home = ({ classes }) => (
   </div>
 )
 
-Home.proptypes = {
+Home.propTypes = {
   classes: PropTypes.object.isRequired // from enhancer (withStyles)
 }
 

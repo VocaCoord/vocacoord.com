@@ -4,8 +4,10 @@ import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import LoginRoute from './Login'
 import SignupRoute from './Signup'
-import ProjectsRoute from './Projects'
 import AccountRoute from './Account'
+import WordbanksRoute from './Wordbanks'
+import WordsRoute from './Words'
+import ImagesRoute from './Images'
 import NotFoundRoute from './NotFound'
 
 export default function createRoutes(store) {
@@ -13,13 +15,13 @@ export default function createRoutes(store) {
     <CoreLayout>
       <Switch>
         <Route exact path={Home.path} component={Home.component} />
-        {/* Build Route components from routeSettings */
-        [
+        {[
           AccountRoute,
-          ProjectsRoute,
           SignupRoute,
-          LoginRoute
-          /* Add More Routes Here */
+          LoginRoute,
+          WordbanksRoute,
+          WordsRoute,
+          ImagesRoute
         ].map((settings, index) => (
           <Route key={`Route-${index}`} {...settings} />
         ))}

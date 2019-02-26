@@ -1,7 +1,7 @@
 export default {
   palette: {
     primary: {
-      main: '#2196f3'
+      main: '#222'
     }
   },
   // Enable typography v2: https://material-ui.com/style/typography/#migration-to-typography-v2
