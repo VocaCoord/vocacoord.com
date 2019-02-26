@@ -15,7 +15,8 @@ import {
   firebase as fbConfig,
   reduxFirebase as rrfConfig,
   env
-} from '../config'
+} from '../config.dev'
+import { metaDataConfig } from './metaDataConfig'
 
 export default (initialState = {}) => {
   // ======================================================
@@ -41,7 +42,7 @@ export default (initialState = {}) => {
 
   // Combine default config with overrides if they exist (set within .firebaserc)
   const combinedConfig = rrfConfig
-    ? { ...defaultRRFConfig, ...rrfConfig }
+    ? { ...defaultRRFConfig, ...rrfConfig, ...metaDataConfig }
     : defaultRRFConfig
 
   // ======================================================
@@ -68,7 +69,6 @@ export default (initialState = {}) => {
   // Firebase Initialization
   // ======================================================
   firebase.initializeApp(fbConfig)
-  firebase.firestore().settings({ timestampsInSnapshots: true })
 
   // ======================================================
   // Store Instantiation and HMR Setup

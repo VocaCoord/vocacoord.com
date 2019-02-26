@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { LIST_PATH } from 'constants/paths'
+import { WORDBANKS_PATH } from 'constants/paths'
+import { VCLogo } from 'components/Icons'
 import AccountMenu from './AccountMenu'
 import LoginMenu from './LoginMenu'
 
@@ -26,8 +27,11 @@ export const Navbar = ({
         color="inherit"
         className={classes.flex}
         component={Link}
-        to={authExists ? LIST_PATH : '/'}>
-        website
+        to={authExists ? WORDBANKS_PATH : '/'}>
+        <div className={classes.logo}>
+          <VCLogo />
+        </div>
+        <h2 className={classes.logoText}>ocaCoord</h2>
       </Typography>
       {authExists ? (
         <AccountMenu

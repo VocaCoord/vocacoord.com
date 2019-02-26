@@ -1,4 +1,4 @@
-import { firebase, sentryDsn, env as environment } from '../config'
+import { firebase, sentryDsn, env as environment } from '../config.dev'
 import { version } from '../../package.json'
 
 let errorHandler

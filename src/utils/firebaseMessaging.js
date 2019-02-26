@@ -1,7 +1,7 @@
 import { get } from 'lodash'
 import firebase from 'firebase/app'
 import messageActions from 'modules/notification'
-import { publicVapidKey } from '../config'
+import { publicVapidKey } from '../config.dev'
 import 'firebase/messaging'
 
 /**

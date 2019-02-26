@@ -1,5 +1,5 @@
 import ReactGA from 'react-ga'
-import { analyticsTrackingId, env as environment } from 'config'
+import { analyticsTrackingId, env as environment } from 'config.dev'
 import { version } from '../../package.json'
 
 /**
