@@ -6,6 +6,7 @@ import Scrollbar from 'react-scrollbars-custom'
 import ItemTile from 'components/ItemTile'
 import NewItemTile from 'components/NewItemTile'
 import NewWordDialog from '../NewWordDialog'
+import Dictaphone from 'components/Dictaphone';
 
 const WordsPage = ({
   words,
@@ -23,32 +24,35 @@ const WordsPage = ({
       exact
       path={match.path}
       render={() => (
-        <Scrollbar className={classes.scrollbar}>
-          <div className={classes.root}>
-            <NewWordDialog
-              onSubmit={addWord}
-              open={newDialogOpen}
-              onRequestClose={toggleDialog}
-            />
-            <div className={classes.tiles}>
-              <NewItemTile onClick={toggleDialog} />
-              {!isEmpty(words) &&
-                words.map((word, i) => {
-                  const { wordbankId = null } = match.params
-                  if (word.wordbankId !== wordbankId && wordbankId !== null)
-                    return null
-                  return (
-                    <ItemTile
-                      key={`Word-${word.id}-${i}`}
-                      name={word.name}
-                      onSelect={() => goToWord(word.id)}
-                      onDelete={() => deleteWord(word.id)}
-                    />
-                  )
-                })}
+        <div>
+          <Scrollbar className={classes.scrollbar}>
+            <div className={classes.root}>
+              <NewWordDialog
+                onSubmit={addWord}
+                open={newDialogOpen}
+                onRequestClose={toggleDialog}
+              />
+              <div className={classes.tiles}>
+                <NewItemTile onClick={toggleDialog} />
+                {!isEmpty(words) &&
+                  words.map((word, i) => {
+                    const { wordbankId = null } = match.params
+                    if (word.wordbankId !== wordbankId && wordbankId !== null)
+                      return null
+                    return (
+                      <ItemTile
+                        key={`Word-${word.id}-${i}`}
+                        name={word.name}
+                        onSelect={() => goToWord(word.id)}
+                        onDelete={() => deleteWord(word.id)}
+                      />
+                    )
+                  })}
+              </div>
             </div>
-          </div>
-        </Scrollbar>
+          </Scrollbar>
+          <Dictaphone words={['test', 'snake']} />
+        </div>
       )}
     />
   )

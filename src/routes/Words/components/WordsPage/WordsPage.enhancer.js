@@ -17,8 +17,6 @@ export default compose(
   UserIsAuthenticated,
   // Map auth uid from state to props
   connect(({ firebase: { auth: { uid } } }) => ({ uid })),
-  // Wait for uid to exist before going further
-  spinnerWhileLoading(['uid']),
   // Create listeners based on current users UID
   firestoreConnect(({ params, uid }) => {
     return [
@@ -31,8 +29,6 @@ export default compose(
   }),
   // Map words from state to props
   connect(({ firestore: { ordered: { words } } }) => ({ words })),
-  // Show loading spinner while words are loading
-  spinnerWhileLoading(['words']),
   // Add props.router
   withRouter,
   // Add props.showError and props.showSuccess
