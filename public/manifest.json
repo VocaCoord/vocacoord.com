@@ -2,7 +2,7 @@
   "short_name": "VC",
   "name": "VocaCoord",
   "start_url": "/login/",
-  "background_color": "#2196f3",
-  "theme_color": "#2196f3",
+  "background_color": "#FFA500",
+  "theme_color": "#222",
   "display": "standalone"
 }

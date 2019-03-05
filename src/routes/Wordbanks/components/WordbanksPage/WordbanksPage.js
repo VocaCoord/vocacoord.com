@@ -21,7 +21,7 @@ const WordbanksPage = ({
   goToWords
 }) => (
   <Switch>
-    {renderChildren([WordsRoute], match, { auth })}
+    {renderChildren([WordsRoute], match)}
     <Route
       exact
       path={match.path}

@@ -1,6 +1,5 @@
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { WORDS_PATH } from 'constants/paths'
 import { withHandlers, withStateHandlers, setDisplayName } from 'recompose'
 import { withRouter } from 'react-router-dom'
 import { firestoreConnect } from 'react-redux-firebase'
@@ -17,18 +16,29 @@ export default compose(
   UserIsAuthenticated,
   // Map auth uid from state to props
   connect(({ firebase: { auth: { uid } } }) => ({ uid })),
+  // Wait for uid to exist before going further
+  spinnerWhileLoading(['uid']),
   // Create listeners based on current users UID
-  firestoreConnect(({ params, uid }) => {
-    return [
-      // Listener for words the current user created
-      {
-        collection: 'words',
-        where: ['createdBy', '==', uid]
+  firestoreConnect(
+    ({
+      params,
+      uid,
+      match: {
+        params: { wordbankId = null }
       }
-    ]
-  }),
+    }) => {
+      const where = [['createdBy', '==', uid]]
+      if (wordbankId !== null) where.push(['wordbankId', '==', wordbankId])
+      return [
+        // Listener for words the current user created
+        { collection: 'words', where }
+      ]
+    }
+  ),
   // Map words from state to props
   connect(({ firestore: { ordered: { words } } }) => ({ words })),
+  // Show loading spinner while words are loading
+  spinnerWhileLoading(['words']),
   // Add props.router
   withRouter,
   // Add props.showError and props.showSuccess
@@ -90,9 +100,6 @@ export default compose(
           showError(err.message || 'Could not delete word')
           return Promise.reject(err)
         })
-    },
-    goToWord: ({ history }) => wordId => {
-      history.push(`${WORDS_PATH}/${wordId}`)
     }
   }),
   // Add styles as props.classes

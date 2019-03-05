@@ -1,40 +1,9 @@
 {
   "projects": {
-    "default": "vocacoord-dev-jerry",
-    "master": "vocacoord-dev-jerry",
-    "prod": "vocacoord-dev-jerry"
-  },
-  "ci": {
-    "copyVersion": true,
-    "createConfig": {
-      "master": {
-        "env": "staging",
-        "firebase": {
-          "apiKey": "AIzaSyDYFteY5wAzyiXixHyeN0gUq9V97luPiHw",
-          "authDomain": "vocacoord-dev-jerry.firebaseapp.com",
-          "databaseURL": "https://vocacoord-dev-jerry.firebaseio.com",
-          "projectId": "vocacoord-dev-jerry",
-          "storageBucket": "vocacoord-dev-jerry.appspot.com",
-          "messagingSenderId": "755182670601"
-        },
-        "sentryDsn": "${SENTRY_DSN}",
-        "analyticsTrackingId": "${GA_TRACKING_ID}",
-        "publicVapidKey": "${STAGE_PUBLIC_VAPID_KEY}"
-      },
-      "prod": {
-        "env": "production",
-        "firebase": {
-          "apiKey": "AIzaSyDYFteY5wAzyiXixHyeN0gUq9V97luPiHw",
-          "authDomain": "vocacoord-dev-jerry.firebaseapp.com",
-          "databaseURL": "https://vocacoord-dev-jerry.firebaseio.com",
-          "projectId": "vocacoord-dev-jerry",
-          "storageBucket": "vocacoord-dev-jerry.appspot.com",
-          "messagingSenderId": "755182670601"
-        },
-        "sentryDsn": "${SENTRY_DSN}",
-        "analyticsTrackingId": "${GA_TRACKING_ID}",
-        "publicVapidKey": "${PROD_PUBLIC_VAPID_KEY}"
-      }
-    }
+    "default": "vocacoord-dev",
+    "dev:jerry": "vocacoord-dev-jerry",
+    "dev": "vocacoord-dev",
+    "staging": "vocacoord-staging",
+    "production": "vocacoord"
   }
 }

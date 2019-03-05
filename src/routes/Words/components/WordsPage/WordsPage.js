@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'react-redux-firebase'
-import { Route } from 'react-router-dom'
 import Scrollbar from 'react-scrollbars-custom'
 import ItemTile from 'components/ItemTile'
 import NewItemTile from 'components/NewItemTile'
 import NewWordDialog from '../NewWordDialog'
-import Dictaphone from 'components/Dictaphone';
+import { Dictaphone } from 'components/Dictaphone'
 
 const WordsPage = ({
   words,
@@ -16,45 +15,34 @@ const WordsPage = ({
   deleteWord,
   addWord,
   classes,
-  match,
-  goToWord
+  match
 }) => {
+  const { wordbankId = null } = match.params
   return (
-    <Route
-      exact
-      path={match.path}
-      render={() => (
-        <div>
-          <Scrollbar className={classes.scrollbar}>
-            <div className={classes.root}>
-              <NewWordDialog
-                onSubmit={addWord}
-                open={newDialogOpen}
-                onRequestClose={toggleDialog}
-              />
-              <div className={classes.tiles}>
-                <NewItemTile onClick={toggleDialog} />
-                {!isEmpty(words) &&
-                  words.map((word, i) => {
-                    const { wordbankId = null } = match.params
-                    if (word.wordbankId !== wordbankId && wordbankId !== null)
-                      return null
-                    return (
-                      <ItemTile
-                        key={`Word-${word.id}-${i}`}
-                        name={word.name}
-                        onSelect={() => goToWord(word.id)}
-                        onDelete={() => deleteWord(word.id)}
-                      />
-                    )
-                  })}
-              </div>
-            </div>
-          </Scrollbar>
-          <Dictaphone words={['test', 'snake']} />
+    <div>
+      <Scrollbar className={classes.scrollbar}>
+        <div className={classes.root}>
+          <NewWordDialog
+            onSubmit={addWord}
+            open={newDialogOpen}
+            onRequestClose={toggleDialog}
+          />
+          <div className={classes.tiles}>
+            <NewItemTile onClick={toggleDialog} />
+            {!isEmpty(words) &&
+              words.map((word, i) => (
+                <ItemTile
+                  key={`Word-${word.id}-${i}`}
+                  name={word.name}
+                  onSelect={() => {}}
+                  onDelete={() => deleteWord(word.id)}
+                />
+              ))}
+          </div>
         </div>
-      )}
-    />
+      </Scrollbar>
+      {wordbankId !== null && <Dictaphone words={words} />}
+    </div>
   )
 }
 
@@ -66,8 +54,7 @@ WordsPage.propTypes = {
   newDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
   toggleDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
   deleteWord: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  addWord: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  goToWord: PropTypes.func.isRequired // from enhancer (withHandlers - router)
+  addWord: PropTypes.func.isRequired // from enhancer (withHandlers - firebase)
 }
 
 export default WordsPage
