@@ -6,7 +6,6 @@ import { version } from '../package.json'
 import { env } from './config.dev'
 import './index.css'
 
-// import * as serviceWorker from './serviceWorker'
 import App from './containers/App'
 
 // Window Variables

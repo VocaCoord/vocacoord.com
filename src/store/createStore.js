@@ -8,7 +8,6 @@ import 'firebase/auth'
 import 'firebase/storage'
 import 'firebase/firestore'
 import 'firebase/messaging'
-import { initializeMessaging } from 'utils/firebaseMessaging'
 import { setAnalyticsUser } from 'utils/analytics'
 import makeRootReducer from './reducers'
 import {
@@ -34,8 +33,6 @@ export default (initialState = {}) => {
       if (auth) {
         // Set auth within analytics
         setAnalyticsUser(auth)
-        // Initalize messaging with dispatch
-        initializeMessaging(dispatch)
       }
     }
   }

@@ -12,8 +12,7 @@ export const firebase = {
   authDomain: 'vocacoord-dev-jerry.firebaseapp.com',
   databaseURL: 'https://vocacoord-dev-jerry.firebaseio.com',
   projectId: 'vocacoord-dev-jerry',
-  storageBucket: 'vocacoord-dev-jerry.appspot.com',
-  messagingSenderId: '755182670601'
+  storageBucket: 'vocacoord-dev-jerry.appspot.com'
 }
 
 // Config to override default reduxFirebase config in store/createStore
@@ -25,9 +24,6 @@ export const reduxFirebase = {
 
 export const analyticsTrackingId = ''
 
-export const publicVapidKey =
-  'BF6YpO--fDPUtZpEEkY0zh-DRAjEA32bhSFElogsbL_KTECYkcIt0zdCLf7znI5z0HDkLf8bLz1pNZJsOFVU21Q'
-
 export const sentryDsn =
   'https://7bdc42733dcc406c9227ea2a637e9421@sentry.io/1381805'
 
@@ -36,6 +32,5 @@ export default {
   firebase,
   reduxFirebase,
   sentryDsn,
-  publicVapidKey,
   analyticsTrackingId
 }

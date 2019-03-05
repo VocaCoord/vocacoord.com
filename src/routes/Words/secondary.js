@@ -4,6 +4,6 @@ export default {
   path: ':wordbankId',
   component: Loadable({
     loader: () =>
-      import(/* webpackChunkName: 'Words' */ './components/WordsPage')
+      import(/* webpackChunkName: 'Words2' */ './components/WordsPage')
   })
 }

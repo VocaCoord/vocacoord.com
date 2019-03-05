@@ -1,4 +1,4 @@
-import WordbanksPage from './WordsPage'
+import WordsPage from './WordsPage'
 import enhance from './WordsPage.enhancer'
 
-export default enhance(WordbanksPage)
+export default enhance(WordsPage)
