@@ -7,7 +7,6 @@ import SignupRoute from './Signup'
 import AccountRoute from './Account'
 import WordbanksRoute from './Wordbanks'
 import WordsRoute from './Words'
-import ImagesRoute from './Images'
 import NotFoundRoute from './NotFound'
 
 export default function createRoutes(store) {
@@ -20,8 +19,7 @@ export default function createRoutes(store) {
           SignupRoute,
           LoginRoute,
           WordbanksRoute,
-          WordsRoute,
-          ImagesRoute
+          WordsRoute
         ].map((settings, index) => (
           <Route key={`Route-${index}`} {...settings} />
         ))}

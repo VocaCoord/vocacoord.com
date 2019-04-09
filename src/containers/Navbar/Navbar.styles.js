@@ -4,11 +4,6 @@ export default theme => ({
   },
   logo: {
     float: 'left',
-    transform: 'translate(0, 5px)'
-  },
-  logoText: {
-    transform: 'translate(-10px, 19px)',
-    marginBlockStart: '0',
-    marginBlockEnd: '0'
+    transform: 'translate(0, 2px)'
   }
 })

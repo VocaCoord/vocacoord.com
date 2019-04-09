@@ -4,44 +4,67 @@ import { isEmpty } from 'react-redux-firebase'
 import Scrollbar from 'react-scrollbars-custom'
 import ItemTile from 'components/ItemTile'
 import NewItemTile from 'components/NewItemTile'
-import NewWordDialog from '../NewWordDialog'
+import AddWordDialog from '../AddWordDialog'
+import EditWordDialog from '../EditWordDialog'
 import { Dictaphone } from 'components/Dictaphone'
 
 const WordsPage = ({
   words,
+  classrooms: [{ classCode }],
   auth,
-  newDialogOpen,
-  toggleDialog,
+  addDialogOpen,
+  toggleAddDialog,
+  editDialogOpen,
+  toggleEditDialog,
   deleteWord,
   addWord,
+  editWord,
   classes,
-  match
+  match,
+  selected,
+  wordbankName
 }) => {
   const { wordbankId = null } = match.params
   return (
     <div>
+      <div className={classes.header}>
+        <div className={classes.headerText}>
+          Words
+          {wordbankName &&
+            ` in the ${wordbankName} wordbank. Class code: ${classCode}`}{' '}
+        </div>
+      </div>
       <Scrollbar className={classes.scrollbar}>
         <div className={classes.root}>
-          <NewWordDialog
+          <AddWordDialog
             onSubmit={addWord}
-            open={newDialogOpen}
-            onRequestClose={toggleDialog}
+            open={addDialogOpen}
+            onRequestClose={toggleAddDialog}
+          />
+          <EditWordDialog
+            onSubmit={editWord}
+            open={editDialogOpen}
+            onRequestClose={toggleEditDialog}
+            initialValues={selected}
           />
           <div className={classes.tiles}>
-            <NewItemTile onClick={toggleDialog} />
+            <NewItemTile onClick={toggleAddDialog} />
             {!isEmpty(words) &&
               words.map((word, i) => (
                 <ItemTile
                   key={`Word-${word.id}-${i}`}
-                  name={word.name}
                   onSelect={() => {}}
                   onDelete={() => deleteWord(word.id)}
+                  onOpenEdit={toggleEditDialog}
+                  item={word}
                 />
               ))}
           </div>
         </div>
       </Scrollbar>
-      {wordbankId !== null && <Dictaphone words={words} />}
+      {wordbankId !== null && (
+        <Dictaphone words={words} classCode={classCode} />
+      )}
     </div>
   )
 }
@@ -51,8 +74,10 @@ WordsPage.propTypes = {
   match: PropTypes.object.isRequired, // from enhancer (withRouter)
   auth: PropTypes.object, // from enhancer (connect + firebaseConnect - firebase)
   words: PropTypes.array, // from enhancer (connect + firebaseConnect - firebase)
-  newDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
+  addDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
+  toggleAddDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
+  editDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
+  toggleEditDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
   deleteWord: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
   addWord: PropTypes.func.isRequired // from enhancer (withHandlers - firebase)
 }

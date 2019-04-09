@@ -5,10 +5,10 @@ import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase/app'
 import 'firebase/database'
 import 'firebase/auth'
+import 'firebase/functions'
 import 'firebase/storage'
 import 'firebase/firestore'
 import 'firebase/messaging'
-import { setAnalyticsUser } from 'utils/analytics'
 import makeRootReducer from './reducers'
 import {
   firebase as fbConfig,
@@ -28,13 +28,7 @@ export default (initialState = {}) => {
     sessions: null, // Skip storing of sessions
     enableLogging: false, // enable/disable Firebase Database Logging
     useFirestoreForProfile: true, // Save profile to Firestore instead of Real Time Database
-    useFirestoreForStorageMeta: true, // Metadata associated with storage file uploads goes to Firestore
-    onAuthStateChanged: (auth, firebase, dispatch) => {
-      if (auth) {
-        // Set auth within analytics
-        setAnalyticsUser(auth)
-      }
-    }
+    useFirestoreForStorageMeta: true // Metadata associated with storage file uploads goes to Firestore
   }
 
   // Combine default config with overrides if they exist (set within .firebaserc)
@@ -66,6 +60,7 @@ export default (initialState = {}) => {
   // Firebase Initialization
   // ======================================================
   firebase.initializeApp(fbConfig)
+  firebase.functions()
 
   // ======================================================
   // Store Instantiation and HMR Setup

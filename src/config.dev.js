@@ -22,8 +22,6 @@ export const reduxFirebase = {
   enableLogging: false // enable/disable Firebase Database Logging
 }
 
-export const analyticsTrackingId = ''
-
 export const sentryDsn =
   'https://7bdc42733dcc406c9227ea2a637e9421@sentry.io/1381805'
 
@@ -31,6 +29,5 @@ export default {
   env,
   firebase,
   reduxFirebase,
-  sentryDsn,
-  analyticsTrackingId
+  sentryDsn
 }

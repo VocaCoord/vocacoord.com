@@ -28,6 +28,8 @@ class Dictaphone extends Component {
 
   componentWillUnmount() {
     this.closeSocket()
+    const { stopListening } = this.props
+    if (stopListening) stopListening()
   }
 
   static getDerivedStateFromProps = (props, state) => {
@@ -50,7 +52,7 @@ class Dictaphone extends Component {
   }
 
   openSocket = () => {
-    const { classCode = 'AAAA' } = this.props
+    const { classCode } = this.props
     this.socket = new ClusterWS({
       url: 'wss://temp-vocacoord.herokuapp.com/'
     })
@@ -86,7 +88,7 @@ class Dictaphone extends Component {
         style={{
           position: 'absolute',
           right: 10,
-          bottom: 50,
+          bottom: 10,
           outline: 'none'
         }}>
         {connecting ? <ConnectingIcon className="spinner" /> : micIcon}

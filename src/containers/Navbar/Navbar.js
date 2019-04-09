@@ -31,7 +31,6 @@ export const Navbar = ({
         <div className={classes.logo}>
           <VCLogo />
         </div>
-        <h2 className={classes.logoText}>ocaCoord</h2>
       </Typography>
       {authExists ? (
         <AccountMenu

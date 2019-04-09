@@ -1,8 +1,16 @@
 export default theme => ({
   root: {
-    ...theme.flexColumnCenter
+    width: '100%',
+    height: 'calc(100vh - 64px)',
+    pointerEvents: 'none'
   },
-  section: {
-    ...theme.flexColumnCenter
+  scrollbar: {
+    width: '100vw',
+    height: 'calc(100vh - 64px)',
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#06101f',
+    fontSize: 20,
+    color: '#7487a3'
   }
 })

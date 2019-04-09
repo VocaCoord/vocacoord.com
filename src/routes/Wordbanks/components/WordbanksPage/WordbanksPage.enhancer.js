@@ -38,22 +38,32 @@ export default compose(
   // Add state and state handlers as props
   withStateHandlers(
     // Setup initial state
-    ({ initialDialogOpen = false }) => ({
-      newDialogOpen: initialDialogOpen
+    ({ initialAddDialogOpen = false, initialEditDialogOpen = false }) => ({
+      addDialogOpen: initialAddDialogOpen,
+      editDialogOpen: initialEditDialogOpen,
+      selected: {
+        name: '',
+        definition: ''
+      }
     }),
     // Add state handlers as props
     {
-      toggleDialog: ({ newDialogOpen }) => () => ({
-        newDialogOpen: !newDialogOpen
+      toggleAddDialog: ({ addDialogOpen }) => () => ({
+        addDialogOpen: !addDialogOpen
+      }),
+      toggleEditDialog: ({ editDialogOpen }) => wordbank => ({
+        editDialogOpen: !editDialogOpen,
+        selected: { ...wordbank }
       })
     }
   ),
   // Add handlers as props
   withHandlers({
-    addWordbank: props => newInstance => {
-      const { firestore, uid, showError, showSuccess, toggleDialog } = props
+    // this should be rewritten using firebase (cloud) functions
+    addWordbank: props => async newInstance => {
+      const { firestore, uid, showError, showSuccess, toggleAddDialog } = props
       if (!uid) return showError('You must be logged in to create a wordbank')
-      return firestore
+      const wordbankId = await firestore
         .add(
           { collection: 'wordbanks' },
           {
@@ -62,8 +72,40 @@ export default compose(
             createdAt: firestore.FieldValue.serverTimestamp()
           }
         )
+        .then(({ id }) => id)
+        .catch(err => {
+          console.error('Error:', err) // eslint-disable-line no-console
+          showError(err.message || 'Could not add wordbank')
+          return Promise.reject(err)
+        })
+
+      const classroomId = await firestore
+        .collection('classrooms')
+        .get()
+        .then(snapshot => {
+          let classroomId = ''
+          const classroomIds = []
+          snapshot.forEach(doc => classroomIds.push(doc.data().classCode))
+          do {
+            classroomId = Math.random()
+              .toString(36)
+              .substring(2, 6)
+              .toUpperCase()
+          } while (classroomIds.includes(classroomId))
+          return classroomId
+        })
+      return firestore
+        .add(
+          { collection: 'classrooms' },
+          {
+            classCode: classroomId,
+            wordbankId,
+            createdBy: uid,
+            createdAt: firestore.FieldValue.serverTimestamp()
+          }
+        )
         .then(() => {
-          toggleDialog()
+          toggleAddDialog()
           showSuccess('Wordbank added successfully')
         })
         .catch(err => {
@@ -83,9 +125,23 @@ export default compose(
           return Promise.reject(err)
         })
     },
-    goToWords: ({ history }) => wordbankId => {
-      history.push(`${WORDBANKS_PATH}/${wordbankId}`)
-    }
+    editWordbank: props => ({ id: wordbankId, name, definition, image }) => {
+      const { firestore, uid, showError, showSuccess, toggleEditDialog } = props
+      if (!uid) return showError('You must be logged in to edit a word')
+      return firestore
+        .update(`wordbanks/${wordbankId}`, { name, definition, image })
+        .then(() => {
+          toggleEditDialog()
+          showSuccess('Wordbank edited successfully')
+        })
+        .catch(err => {
+          console.error('Error:', err) // eslint-disable-line no-console
+          showError(err.message || 'Could not edit word')
+          return Promise.reject(err)
+        })
+    },
+    goToWords: ({ history }) => ({ id: wordbankId, name: wordbankName }) =>
+      history.push(`${WORDBANKS_PATH}/${wordbankId}`, { wordbankName })
   }),
   // Add styles as props.classes
   withStyles(styles)

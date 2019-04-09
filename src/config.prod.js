@@ -23,8 +23,6 @@ export const reduxFirebase = {
   enableLogging: false // enable/disable Firebase Database Logging
 }
 
-export const analyticsTrackingId = ''
-
 export const publicVapidKey =
   'BF6YpO--fDPUtZpEEkY0zh-DRAjEA32bhSFElogsbL_KTECYkcIt0zdCLf7znI5z0HDkLf8bLz1pNZJsOFVU21Q'
 
@@ -36,6 +34,5 @@ export default {
   firebase,
   reduxFirebase,
   sentryDsn,
-  publicVapidKey,
-  analyticsTrackingId
+  publicVapidKey
 }

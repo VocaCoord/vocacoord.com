@@ -6,18 +6,23 @@ import Scrollbar from 'react-scrollbars-custom'
 import ItemTile from 'components/ItemTile'
 import NewItemTile from 'components/NewItemTile'
 import { renderChildren } from 'utils/router'
-import NewWordbankDialog from '../NewWordbankDialog'
-import WordsRoute from 'routes/Words/secondary'
+import AddWordbankDialog from '../AddWordbankDialog'
+import EditWordbankDialog from '../EditWordbankDialog'
+import WordsRoute from 'routes/Words'
 
 const WordbanksPage = ({
   wordbanks,
   auth,
-  newDialogOpen,
-  toggleDialog,
+  addDialogOpen,
+  toggleAddDialog,
+  editDialogOpen,
+  toggleEditDialog,
   deleteWordbank,
   addWordbank,
+  editWordbank,
   classes,
   match,
+  selected,
   goToWords
 }) => (
   <Switch>
@@ -26,27 +31,39 @@ const WordbanksPage = ({
       exact
       path={match.path}
       render={() => (
-        <Scrollbar className={classes.scrollbar}>
-          <div className={classes.root}>
-            <NewWordbankDialog
-              onSubmit={addWordbank}
-              open={newDialogOpen}
-              onRequestClose={toggleDialog}
-            />
-            <div className={classes.tiles}>
-              <NewItemTile onClick={toggleDialog} />
-              {!isEmpty(wordbanks) &&
-                wordbanks.map((wordbank, i) => (
-                  <ItemTile
-                    key={`Wordbank-${wordbank.id}-${i}`}
-                    name={wordbank.name}
-                    onSelect={() => goToWords(wordbank.id)}
-                    onDelete={() => deleteWordbank(wordbank.id)}
-                  />
-                ))}
-            </div>
+        <div>
+          <div className={classes.header}>
+            <div className={classes.headerText}>Wordbanks</div>
           </div>
-        </Scrollbar>
+          <Scrollbar className={classes.scrollbar}>
+            <div className={classes.root}>
+              <AddWordbankDialog
+                onSubmit={addWordbank}
+                open={addDialogOpen}
+                onRequestClose={toggleAddDialog}
+              />
+              <EditWordbankDialog
+                onSubmit={editWordbank}
+                open={editDialogOpen}
+                onRequestClose={toggleEditDialog}
+                initialValues={selected}
+              />
+              <div className={classes.tiles}>
+                <NewItemTile onClick={toggleAddDialog} />
+                {!isEmpty(wordbanks) &&
+                  wordbanks.map((wordbank, i) => (
+                    <ItemTile
+                      key={`Wordbank-${wordbank.id}-${i}`}
+                      onSelect={() => goToWords(wordbank)}
+                      onDelete={() => deleteWordbank(wordbank.id)}
+                      onOpenEdit={toggleEditDialog}
+                      item={wordbank}
+                    />
+                  ))}
+              </div>
+            </div>
+          </Scrollbar>
+        </div>
       )}
     />
   </Switch>
@@ -57,11 +74,12 @@ WordbanksPage.propTypes = {
   match: PropTypes.object.isRequired, // from enhancer (withRouter)
   auth: PropTypes.object, // from enhancer (connect + firebaseConnect - firebase)
   wordbanks: PropTypes.array, // from enhancer (connect + firebaseConnect - firebase)
-  newDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
+  addDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
+  toggleAddDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
+  editDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
+  toggleEditDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
   deleteWordbank: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  addWordbank: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  goToWords: PropTypes.func.isRequired // from enhancer (withHandlers - router)
+  addWordbank: PropTypes.func.isRequired // from enhancer (withHandlers - firebase)
 }
 
 export default WordbanksPage

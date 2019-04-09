@@ -13,7 +13,7 @@ const NewItemTile = ({ onClick, classes }) => (
 )
 
 NewItemTile.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
+  classes: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired
 }
 
