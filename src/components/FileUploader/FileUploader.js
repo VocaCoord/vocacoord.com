@@ -1,82 +1,77 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { map } from 'lodash'
-import { compose, withHandlers, setPropTypes } from 'recompose'
-import { firebaseConnect, getFirebase } from 'react-redux-firebase'
-import Dropzone from 'react-dropzone'
+import { compose, setPropTypes } from 'recompose'
+import { firebaseConnect } from 'react-redux-firebase'
+import Uppy from '@uppy/core'
+import { Dashboard } from '@uppy/react'
+import uuid from 'uuid/v4'
+import '@uppy/core/dist/style.css'
+import '@uppy/dashboard/dist/style.css'
+import './style.css'
 
-// Path within Database for metadata (also used for file Storage path)
-const firebase = getFirebase()
-const filesPath = firebase.auth().currentUser.uid
-
-const handlers = {
-  // Uploads files and push's objects containing metadata to database at dbPath
-  onFilesDrop: props => files => {
-    // uploadFiles(storagePath, files, dbPath)
-    return props.firebase.uploadFiles(filesPath, files, 'images')
-  },
-  onFileDelete: props => (file, key) => {
-    // deleteFile(storagePath, dbPath)
-    return props.firebase.deleteFile(file.fullPath, `${key}`)
-  }
-}
-
-const enhancerPropsTypes = {
+const enhancerPropTypes = {
   firebase: PropTypes.object.isRequired
 }
 
-// Component Enhancer that adds props.firebase and creates a listener for
-// files them passes them into props.uploadedFiles
 const enhance = compose(
+  // Map auth uid from state to props
+  connect(({ firebase: { auth: { uid } } }) => ({ filesPath: uid })),
   // Create listeners for Real Time Database which write to redux store
-  firebaseConnect([{ path: filesPath }]),
-  // connect redux state to props
-  connect(({ firebase: { data } }) => ({
-    uploadedFiles: data[filesPath]
-  })),
+  firebaseConnect(({ filesPath }) => [{ path: filesPath }]),
   // Set proptypes of props used within handlers
-  setPropTypes(enhancerPropsTypes),
-  // Add handlers as props
-  withHandlers(handlers)
+  setPropTypes(enhancerPropTypes)
 )
 
-const Uploader = ({ uploadedFiles, onFileDelete, onFilesDrop }) => (
-  <div>
-    <Dropzone onDrop={onFilesDrop} accept="image/*">
-      {({ getRootProps, getInputProps, isDragActive }) => {
-        return (
-          <div {...getRootProps()}>
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <p>Drop files here...</p>
-            ) : (
-              <p>
-                Try dropping some files here, or click to select files to
-                upload.
-              </p>
-            )}
-          </div>
-        )
-      }}
-    </Dropzone>
-    {uploadedFiles && (
-      <div>
-        <h3>Uploaded image:</h3>
-        {map(uploadedFiles, (file, key) => (
-          <div key={file.name + key}>
-            <span>{file.name}</span>
-            <button onClick={() => onFileDelete(file, key)}>Delete File</button>
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-)
+const uppyConfig = {
+  id: 'uppy',
+  autoProceed: false,
+  allowMultipleUploads: false,
+  restrictions: {
+    maxFileSize: 10 * 1000 * 1000,
+    maxNumberOfFiles: 1,
+    minNumberOfFiles: 1
+  }
+}
 
-Uploader.propTypes = {
-  firebase: PropTypes.object.isRequired,
-  uploadedFiles: PropTypes.object
+function FirebaseUploader(uppy, { input: { onChange }, filesPath, firebase }) {
+  const uploadFile = fileId => {
+    const file = uppy.getFile(fileId)
+    const blob = file.data.slice(0, -1)
+    const name = uuid()
+    const fileData = new File([blob], name, { type: file.type })
+
+    firebase
+      .uploadFile(filesPath, fileData, 'images', { progress: true })
+      .then(({ uploadTaskSnapshot: snapshot }) => {
+        uppy.emit('upload-success', file, snapshot)
+        snapshot.ref
+          .getDownloadURL()
+          .then(url => onChange({ url, filePath: `${filesPath}/${name}` }))
+      })
+      .catch(e => uppy.emit('upload-error', file, e))
+  }
+  return {
+    type: 'uploader',
+    id: 'FirebaseUploader',
+    uploadFile,
+    install: () => uppy.addUploader(uploadFile),
+    uninstall: () => uppy.removeUploader(uploadFile),
+    update: () => {}
+  }
+}
+
+class Uploader extends React.Component {
+  constructor(props) {
+    super(props)
+    this.uppy = Uppy(uppyConfig).use(FirebaseUploader, props)
+  }
+
+  render() {
+    return (
+      <Dashboard uppy={this.uppy} inline proudlyDisplayPoweredByUppy={false} />
+    )
+  }
 }
 
 export default enhance(Uploader)

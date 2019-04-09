@@ -3,8 +3,9 @@ export default theme => ({
     ...theme.flexRowCenter,
     alignItems: 'center',
     cursor: 'pointer',
-    height: '200px',
-    width: '300px',
+    maxWidth: 400,
+    height: 300,
+    width: 300,
     margin: theme.spacing.unit * 0.5,
     padding: theme.spacing.unit * 1.3,
     overflow: 'hidden'

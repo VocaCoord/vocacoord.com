@@ -19,6 +19,7 @@ export default compose(
   // Wait for uid to exist before going further
   spinnerWhileLoading(['uid']),
   // Create listeners based on current users UID
+  // This should also be rewritten in conjunction with addWordbank in WordbanksPage.enhancer
   firestoreConnect(
     ({
       params,
@@ -31,14 +32,18 @@ export default compose(
       if (wordbankId !== null) where.push(['wordbankId', '==', wordbankId])
       return [
         // Listener for words the current user created
-        { collection: 'words', where }
+        { collection: 'words', where },
+        { collection: 'classrooms', where }
       ]
     }
   ),
   // Map words from state to props
-  connect(({ firestore: { ordered: { words } } }) => ({ words })),
+  connect(({ firestore: { ordered: { words, classrooms } } }) => ({
+    words,
+    classrooms
+  })),
   // Show loading spinner while words are loading
-  spinnerWhileLoading(['words']),
+  spinnerWhileLoading(['words', 'classrooms']),
   // Add props.router
   withRouter,
   // Add props.showError and props.showSuccess
@@ -46,13 +51,28 @@ export default compose(
   // Add state and state handlers as props
   withStateHandlers(
     // Setup initial state
-    ({ initialDialogOpen = false }) => ({
-      newDialogOpen: initialDialogOpen
+    ({
+      initialAddDialogOpen = false,
+      initialEditDialogOpen = false,
+      history: { location: { state: { wordbankName = undefined } = {} } = {} }
+    }) => ({
+      addDialogOpen: initialAddDialogOpen,
+      editDialogOpen: initialEditDialogOpen,
+      selected: {
+        name: '',
+        definition: '',
+        image: ''
+      },
+      wordbankName
     }),
     // Add state handlers as props
     {
-      toggleDialog: ({ newDialogOpen }) => () => ({
-        newDialogOpen: !newDialogOpen
+      toggleAddDialog: ({ addDialogOpen }) => () => ({
+        addDialogOpen: !addDialogOpen
+      }),
+      toggleEditDialog: ({ editDialogOpen }) => word => ({
+        editDialogOpen: !editDialogOpen,
+        selected: { ...word }
       })
     }
   ),
@@ -64,7 +84,7 @@ export default compose(
         uid,
         showError,
         showSuccess,
-        toggleDialog,
+        toggleAddDialog,
         match: {
           params: { wordbankId = null }
         }
@@ -81,7 +101,7 @@ export default compose(
           }
         )
         .then(() => {
-          toggleDialog()
+          toggleAddDialog()
           showSuccess('Word added successfully')
         })
         .catch(err => {
@@ -98,6 +118,21 @@ export default compose(
         .catch(err => {
           console.error('Error:', err) // eslint-disable-line no-console
           showError(err.message || 'Could not delete word')
+          return Promise.reject(err)
+        })
+    },
+    editWord: props => ({ id: wordId, name, definition, image }) => {
+      const { firestore, uid, showError, showSuccess, toggleEditDialog } = props
+      if (!uid) return showError('You must be logged in to edit a word')
+      return firestore
+        .update(`words/${wordId}`, { name, definition, image })
+        .then(() => {
+          toggleEditDialog()
+          showSuccess('Word edited successfully')
+        })
+        .catch(err => {
+          console.error('Error:', err) // eslint-disable-line no-console
+          showError(err.message || 'Could not edit word')
           return Promise.reject(err)
         })
     }

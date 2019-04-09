@@ -18,11 +18,4 @@ functions/dist
 functions/.runtimeconfig.json
 functions/coverage
 
-# Tests
-cypress/videos
-cypress/screenshots
-cypress.env.json
-cypress/config.json
-serviceAccount.json
-
 \.firebase/

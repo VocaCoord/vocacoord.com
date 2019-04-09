@@ -11,13 +11,7 @@
   },
   "hosting": {
     "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "jsconfig.json",
-      "cypress/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "jsconfig.json"],
     "rewrites": [
       {
         "source": "**",
@@ -26,15 +20,7 @@
     ]
   },
   "functions": {
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run build:prod"
-    ],
-    "ignore": [
-      "**/.*",
-      "**/*.spec.js",
-      "src",
-      "scripts/**",
-      "jsconfig.json"
-    ]
+    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build:prod"],
+    "ignore": ["**/.*", "**/*.spec.js", "src", "scripts/**", "jsconfig.json"]
   }
 }
