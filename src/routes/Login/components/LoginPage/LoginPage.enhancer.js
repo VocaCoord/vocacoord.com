@@ -7,22 +7,16 @@ import { withNotifications } from 'modules/notification'
 import styles from './LoginPage.styles'
 
 export default compose(
-  // Set component display name (more clear in dev/error tools)
   setDisplayName('EnhancedLoginPage'),
-  // redirect to /projects if user is already authed
   UserIsNotAuthenticated,
-  // add props.showError
   withNotifications,
-  // Add props.firebase (used in handlers)
   withFirebase,
-  // Set proptypes used in HOCs
   setPropTypes({
-    showError: PropTypes.func.isRequired, // used in handlers
+    showError: PropTypes.func.isRequired,
     firebase: PropTypes.shape({
-      login: PropTypes.func.isRequired // used in handlers
+      login: PropTypes.func.isRequired
     })
   }),
-  // Add handlers as props
   withHandlers({
     onSubmitFail: props => (formErrs, dispatch, err) =>
       props.showError(formErrs ? 'Form Invalid' : err.message || 'Error'),
@@ -33,6 +27,5 @@ export default compose(
     emailLogin: ({ firebase, router, showError }) => creds =>
       firebase.login(creds).catch(err => showError(err.message))
   }),
-  // Add styles as props.classes
   withStyles(styles, { withTheme: true })
 )

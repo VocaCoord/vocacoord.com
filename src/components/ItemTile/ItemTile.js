@@ -63,7 +63,7 @@ const ItemTile = ({
   )
 }
 ItemTile.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
+  classes: PropTypes.object.isRequired,
   name: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
   onDelete: PropTypes.func,

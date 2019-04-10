@@ -33,5 +33,9 @@ export default theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     '-webkit-flex-flow': 'row wrap'
+  },
+  infoButton: {
+    position: 'absolute',
+    right: 0
   }
 })

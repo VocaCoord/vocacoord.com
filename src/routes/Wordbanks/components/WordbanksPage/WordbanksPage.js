@@ -70,16 +70,16 @@ const WordbanksPage = ({
 )
 
 WordbanksPage.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  match: PropTypes.object.isRequired, // from enhancer (withRouter)
-  auth: PropTypes.object, // from enhancer (connect + firebaseConnect - firebase)
-  wordbanks: PropTypes.array, // from enhancer (connect + firebaseConnect - firebase)
-  addDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleAddDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
-  editDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleEditDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
-  deleteWordbank: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  addWordbank: PropTypes.func.isRequired // from enhancer (withHandlers - firebase)
+  classes: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  auth: PropTypes.object,
+  wordbanks: PropTypes.array,
+  addDialogOpen: PropTypes.bool,
+  toggleAddDialog: PropTypes.func.isRequired,
+  editDialogOpen: PropTypes.bool,
+  toggleEditDialog: PropTypes.func.isRequired,
+  deleteWordbank: PropTypes.func.isRequired,
+  addWordbank: PropTypes.func.isRequired
 }
 
 export default WordbanksPage

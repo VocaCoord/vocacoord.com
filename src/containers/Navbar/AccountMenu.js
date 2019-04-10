@@ -44,7 +44,7 @@ const AccountMenu = ({
 )
 
 AccountMenu.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
+  classes: PropTypes.object.isRequired,
   goToAccount: PropTypes.func.isRequired,
   onLogoutClick: PropTypes.func.isRequired,
   closeAccountMenu: PropTypes.func.isRequired,

@@ -18,27 +18,20 @@ import {
 import { metaDataConfig } from './metaDataConfig'
 
 export default (initialState = {}) => {
-  // ======================================================
-  // Redux + Firebase Config (react-redux-firebase & redux-firestore)
-  // ======================================================
   const defaultRRFConfig = {
-    userProfile: 'users', // root that user profiles are written to
-    updateProfileOnLogin: false, // enable/disable updating of profile on login
-    presence: 'presence', // list currently online users under "presence" path in RTDB
-    sessions: null, // Skip storing of sessions
-    enableLogging: false, // enable/disable Firebase Database Logging
-    useFirestoreForProfile: true, // Save profile to Firestore instead of Real Time Database
-    useFirestoreForStorageMeta: true // Metadata associated with storage file uploads goes to Firestore
+    userProfile: 'users',
+    updateProfileOnLogin: false,
+    presence: 'presence',
+    sessions: null,
+    enableLogging: false,
+    useFirestoreForProfile: true,
+    useFirestoreForStorageMeta: true
   }
 
-  // Combine default config with overrides if they exist (set within .firebaserc)
   const combinedConfig = rrfConfig
     ? { ...defaultRRFConfig, ...rrfConfig, ...metaDataConfig }
     : defaultRRFConfig
 
-  // ======================================================
-  // Store Enhancers
-  // ======================================================
   const enhancers = []
 
   if (env === 'local') {
@@ -48,23 +41,11 @@ export default (initialState = {}) => {
     }
   }
 
-  // ======================================================
-  // Middleware Configuration
-  // ======================================================
-  const middleware = [
-    thunk.withExtraArgument(getFirebase)
-    // This is where you add other middleware like redux-observable
-  ]
+  const middleware = [thunk.withExtraArgument(getFirebase)]
 
-  // ======================================================
-  // Firebase Initialization
-  // ======================================================
   firebase.initializeApp(fbConfig)
   firebase.functions()
 
-  // ======================================================
-  // Store Instantiation and HMR Setup
-  // ======================================================
   const store = createStore(
     makeRootReducer(),
     initialState,

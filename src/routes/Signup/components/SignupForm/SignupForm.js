@@ -42,10 +42,10 @@ const SignupForm = ({ pristine, submitting, handleSubmit, classes }) => (
 )
 
 SignupForm.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  pristine: PropTypes.bool.isRequired, // from enhancer (reduxForm)
-  submitting: PropTypes.bool.isRequired, // from enhancer (reduxForm)
-  handleSubmit: PropTypes.func.isRequired // from enhancer (reduxForm - calls onSubmit)
+  classes: PropTypes.object.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired
 }
 
 export default SignupForm

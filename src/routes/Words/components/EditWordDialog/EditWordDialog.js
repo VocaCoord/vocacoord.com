@@ -10,53 +10,48 @@ import { TextField } from 'redux-form-material-ui'
 import { required } from 'utils/form'
 import { FileUploader } from 'components/FileUploader'
 
-class EditWordDialog extends React.Component {
-  render() {
-    const { classes, handleSubmit, open, onRequestClose } = this.props
-    return (
-      <Dialog open={open} onClose={onRequestClose}>
-        <DialogTitle id="edit-word-dialog-title">
-          <b>Edit A Word</b>
-        </DialogTitle>
-        <form onSubmit={handleSubmit} className={classes.inputs}>
-          <DialogContent style={{ paddingTop: '0', paddingBottom: '0' }}>
-            <div style={{ display: 'flex' }}>
-              <Field
-                style={{ flex: '1', paddingRight: '20px' }}
-                name="name"
-                component={TextField}
-                label="Word Name"
-                validate={[required]}
-              />
-              <Field
-                style={{ flex: '1' }}
-                name="definition"
-                component={TextField}
-                label="Word Definition"
-                validate={[required]}
-              />
-            </div>
-            <br />
-            <br />
-            <Field name="image" component={FileUploader} />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onRequestClose} color="secondary">
-              Cancel
-            </Button>
-            <Button type="submit" color="primary">
-              Edit
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    )
-  }
-}
+const EditWordDialog = ({ classes, handleSubmit, open, onRequestClose }) => (
+  <Dialog open={open} onClose={onRequestClose}>
+    <DialogTitle id="edit-word-dialog-title">
+      <b>Edit A Word</b>
+    </DialogTitle>
+    <form onSubmit={handleSubmit} className={classes.inputs}>
+      <DialogContent style={{ paddingTop: '0', paddingBottom: '0' }}>
+        <div style={{ display: 'flex' }}>
+          <Field
+            style={{ flex: '1', paddingRight: '20px' }}
+            name="name"
+            component={TextField}
+            label="Word Name"
+            validate={[required]}
+          />
+          <Field
+            style={{ flex: '1' }}
+            name="definition"
+            component={TextField}
+            label="Word Definition"
+            validate={[required]}
+          />
+        </div>
+        <br />
+        <br />
+        <Field name="image" component={FileUploader} />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onRequestClose} color="secondary">
+          Cancel
+        </Button>
+        <Button type="submit" color="primary">
+          Edit
+        </Button>
+      </DialogActions>
+    </form>
+  </Dialog>
+)
 
 EditWordDialog.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  handleSubmit: PropTypes.func.isRequired, // from enhancer (reduxForm)
+  classes: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired
 }

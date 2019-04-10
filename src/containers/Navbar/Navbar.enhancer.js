@@ -14,14 +14,11 @@ import { ACCOUNT_PATH } from 'constants/paths'
 import styles from './Navbar.styles'
 
 export default compose(
-  // Set component display name (more clear in dev/error tools)
   setDisplayName('EnhancedNavbar'),
-  // Map redux state to props
   connect(({ firebase: { auth, profile } }) => ({
     auth,
     profile
   })),
-  // State handlers as props
   withStateHandlers(
     ({ accountMenuOpenInitially = false }) => ({
       accountMenuOpen: accountMenuOpenInitially,
@@ -36,11 +33,8 @@ export default compose(
       })
     }
   ),
-  // Add props.router (used in handlers)
   withRouter,
-  // Add props.firebase (used in handlers)
   withFirebase,
-  // Handlers as props
   withHandlers({
     handleLogout: props => () => {
       props.firebase.logout()
@@ -52,12 +46,9 @@ export default compose(
       props.closeAccountMenu()
     }
   }),
-  // Add custom props
   withProps(({ auth, profile }) => ({
     authExists: isLoaded(auth) && !isEmpty(auth)
   })),
-  // Flatten profile so that avatarUrl and displayName are props
   flattenProp('profile'),
-  // Add styles as classes prop
   withStyles(styles)
 )

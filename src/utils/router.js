@@ -22,13 +22,11 @@ export const UserIsAuthenticated = connectedRouterRedirect({
   redirectPath: '/login',
   AuthenticatingComponent: LoadingSpinner,
   wrapperDisplayName: 'UserIsAuthenticated',
-  // Want to redirect the user when they are done loading and authenticated
   authenticatedSelector: ({ firebase: { auth } }) =>
     !auth.isEmpty && !!auth.uid,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
   redirectAction: newLoc => dispatch => {
-    // Use push, replace, and go to navigate around.
     history.push(newLoc)
     dispatch({
       type: UNAUTHED_REDIRECT,
@@ -49,14 +47,12 @@ export const UserIsNotAuthenticated = connectedRouterRedirect({
   AuthenticatingComponent: LoadingSpinner,
   wrapperDisplayName: 'UserIsNotAuthenticated',
   allowRedirectBack: false,
-  // Want to redirect the user when they are done loading and authenticated
   authenticatedSelector: ({ firebase: { auth } }) => auth.isEmpty,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
   redirectPath: (state, ownProps) =>
     locationHelper.getRedirectQueryParam(ownProps) || WORDBANKS_PATH,
   redirectAction: newLoc => dispatch => {
-    // Use push, replace, and go to navigate around.
     history.push(newLoc)
     dispatch({
       type: AUTHED_REDIRECT,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { compose, setPropTypes } from 'recompose'
@@ -15,11 +15,8 @@ const enhancerPropTypes = {
 }
 
 const enhance = compose(
-  // Map auth uid from state to props
   connect(({ firebase: { auth: { uid } } }) => ({ filesPath: uid })),
-  // Create listeners for Real Time Database which write to redux store
   firebaseConnect(({ filesPath }) => [{ path: filesPath }]),
-  // Set proptypes of props used within handlers
   setPropTypes(enhancerPropTypes)
 )
 
@@ -61,7 +58,7 @@ function FirebaseUploader(uppy, { input: { onChange }, filesPath, firebase }) {
   }
 }
 
-class Uploader extends React.Component {
+class Uploader extends Component {
   constructor(props) {
     super(props)
     this.uppy = Uppy(uppyConfig).use(FirebaseUploader, props)

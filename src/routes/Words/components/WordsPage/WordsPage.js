@@ -2,11 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'react-redux-firebase'
 import Scrollbar from 'react-scrollbars-custom'
+import IconButton from '@material-ui/core/IconButton'
+import InfoIcon from '@material-ui/icons/Info'
 import ItemTile from 'components/ItemTile'
 import NewItemTile from 'components/NewItemTile'
 import AddWordDialog from '../AddWordDialog'
 import EditWordDialog from '../EditWordDialog'
-import { Dictaphone } from 'components/Dictaphone'
+import LogsDialog from '../LogsDialog'
+import Dictaphone from 'components/Dictaphone'
 
 const WordsPage = ({
   words,
@@ -16,6 +19,8 @@ const WordsPage = ({
   toggleAddDialog,
   editDialogOpen,
   toggleEditDialog,
+  logsDialogOpen,
+  toggleLogsDialog,
   deleteWord,
   addWord,
   editWord,
@@ -33,6 +38,9 @@ const WordsPage = ({
           {wordbankName &&
             ` in the ${wordbankName} wordbank. Class code: ${classCode}`}{' '}
         </div>
+        <IconButton onClick={toggleLogsDialog} className={classes.infoButton}>
+          <InfoIcon />
+        </IconButton>
       </div>
       <Scrollbar className={classes.scrollbar}>
         <div className={classes.root}>
@@ -47,6 +55,7 @@ const WordsPage = ({
             onRequestClose={toggleEditDialog}
             initialValues={selected}
           />
+          <LogsDialog open={logsDialogOpen} onRequestClose={toggleLogsDialog} />
           <div className={classes.tiles}>
             <NewItemTile onClick={toggleAddDialog} />
             {!isEmpty(words) &&
@@ -70,16 +79,16 @@ const WordsPage = ({
 }
 
 WordsPage.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  match: PropTypes.object.isRequired, // from enhancer (withRouter)
-  auth: PropTypes.object, // from enhancer (connect + firebaseConnect - firebase)
-  words: PropTypes.array, // from enhancer (connect + firebaseConnect - firebase)
-  addDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleAddDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
-  editDialogOpen: PropTypes.bool, // from enhancer (withStateHandlers)
-  toggleEditDialog: PropTypes.func.isRequired, // from enhancer (withStateHandlers)
-  deleteWord: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  addWord: PropTypes.func.isRequired // from enhancer (withHandlers - firebase)
+  classes: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  auth: PropTypes.object,
+  words: PropTypes.array,
+  addDialogOpen: PropTypes.bool,
+  toggleAddDialog: PropTypes.func.isRequired,
+  editDialogOpen: PropTypes.bool,
+  toggleEditDialog: PropTypes.func.isRequired,
+  deleteWord: PropTypes.func.isRequired,
+  addWord: PropTypes.func.isRequired
 }
 
 export default WordsPage

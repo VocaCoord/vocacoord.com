@@ -55,11 +55,9 @@ export function init() {
  */
 export function setErrorUser(auth) {
   if (auth && auth.uid && environment === 'production') {
-    // Set user within Stackdriver
     if (errorHandler && errorHandler.setUser) {
       errorHandler.setUser(auth.uid)
     }
-    // Set user within Raven (so it will show in Sentry)
     if (window.Raven && window.Raven.setUserContext) {
       window.Raven.setUserContext({
         id: auth.uid,

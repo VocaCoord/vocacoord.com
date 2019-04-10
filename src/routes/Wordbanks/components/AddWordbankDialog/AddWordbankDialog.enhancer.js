@@ -7,7 +7,6 @@ import styles from './AddWordbankDialog.styles'
 export default compose(
   reduxForm({
     form: ADD_WORDBANK_FORM_NAME,
-    // Clear the form for future use (creating another word)
     onSubmitSuccess: (result, dispatch, props) => props.reset()
   }),
   withStyles(styles)

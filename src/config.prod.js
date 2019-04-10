@@ -6,7 +6,6 @@
 
 export const env = 'local'
 
-// Config for firebase
 export const firebase = {
   apiKey: 'AIzaSyA5Skf8JFsuH_RMC4AA_-xeKjdJKGPfJ0I',
   authDomain: 'vocacoord.firebaseapp.com',
@@ -16,11 +15,8 @@ export const firebase = {
   messagingSenderId: '317432010698'
 }
 
-// Config to override default reduxFirebase config in store/createStore
-// which is not environment specific.
-// For more details, visit http://react-redux-firebase.com/docs/api/enhancer.html
 export const reduxFirebase = {
-  enableLogging: false // enable/disable Firebase Database Logging
+  enableLogging: false
 }
 
 export const publicVapidKey =
