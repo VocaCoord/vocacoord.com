@@ -1,6 +1,6 @@
 {
-  "name": "website",
-  "version": "0.0.1",
+  "name": "VocaCoord Website",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
