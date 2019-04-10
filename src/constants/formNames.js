@@ -1,0 +1,7 @@
+export const ACCOUNT_FORM_NAME = 'account'
+export const LOGIN_FORM_NAME = 'login'
+export const SIGNUP_FORM_NAME = 'signup'
+export const ADD_WORDBANK_FORM_NAME = 'addWordbank'
+export const EDIT_WORDBANK_FORM_NAME = 'editWordbank'
+export const ADD_WORD_FORM_NAME = 'addWord'
+export const EDIT_WORD_FORM_NAME = 'editWord'

@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "vocacoord-dev",
+    "dev:jerry": "vocacoord-dev-jerry",
+    "dev": "vocacoord-dev",
+    "staging": "vocacoord-staging",
+    "production": "vocacoord"
+  }
+}
