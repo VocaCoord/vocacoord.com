@@ -43,10 +43,10 @@ export const AccountForm = ({
 
 AccountForm.propTypes = {
   account: PropTypes.object,
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  handleSubmit: PropTypes.func.isRequired, // from enhancer (reduxForm)
-  pristine: PropTypes.bool.isRequired, // from enhancer (reduxForm)
-  submitting: PropTypes.bool.isRequired // from enhancer (reduxForm)
+  classes: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired
 }
 
 export default AccountForm

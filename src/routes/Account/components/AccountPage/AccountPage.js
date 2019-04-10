@@ -28,8 +28,8 @@ const AccountPage = ({ avatarUrl, updateAccount, profile, classes }) => (
 )
 
 AccountPage.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  updateAccount: PropTypes.func.isRequired, // from enhancer (withHandlers)
+  classes: PropTypes.object.isRequired,
+  updateAccount: PropTypes.func.isRequired,
   avatarUrl: PropTypes.string,
   profile: PropTypes.object
 }

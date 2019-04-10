@@ -50,8 +50,8 @@ const AddWordDialog = ({ classes, handleSubmit, open, onRequestClose }) => (
 )
 
 AddWordDialog.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  handleSubmit: PropTypes.func.isRequired, // from enhancer (reduxForm)
+  classes: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired
 }

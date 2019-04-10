@@ -25,10 +25,10 @@ const SignupPage = ({ emailSignup, googleLogin, onSubmitFail, classes }) => (
 )
 
 SignupPage.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  emailSignup: PropTypes.func.isRequired, // from enhancer (withHandlers)
-  googleLogin: PropTypes.func.isRequired, // from enhancer (withHandlers)
-  onSubmitFail: PropTypes.func.isRequired // from enhancer (reduxForm)
+  classes: PropTypes.object.isRequired,
+  emailSignup: PropTypes.func.isRequired,
+  googleLogin: PropTypes.func.isRequired,
+  onSubmitFail: PropTypes.func.isRequired
 }
 
 export default SignupPage

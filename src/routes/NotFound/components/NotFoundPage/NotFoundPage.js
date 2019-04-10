@@ -9,7 +9,7 @@ const NotFoundPage = ({ classes }) => (
 )
 
 NotFoundPage.propTypes = {
-  classes: PropTypes.object // from enhancer (withStyles)
+  classes: PropTypes.object
 }
 
 export default NotFoundPage

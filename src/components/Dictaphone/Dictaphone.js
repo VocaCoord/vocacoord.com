@@ -8,6 +8,7 @@ import {
   Autorenew as ConnectingIcon
 } from '@material-ui/icons'
 import ClusterWS from 'clusterws-client-js'
+import actions from 'modules/logging'
 import './Dictaphone.css'
 
 class Dictaphone extends Component {
@@ -18,7 +19,8 @@ class Dictaphone extends Component {
       lastSpeech: '',
       // eslint-disable-next-line react/no-unused-state
       channel: null,
-      connecting: true
+      connecting: true,
+      logs: []
     }
   }
 
@@ -33,7 +35,7 @@ class Dictaphone extends Component {
   }
 
   static getDerivedStateFromProps = (props, state) => {
-    const { interimTranscript: nextSpeech, resetSpeech } = props
+    const { interimTranscript: nextSpeech, resetSpeech, dispatch } = props
     const { lastSpeech = '', channel } = state
     const lastWords = lastSpeech.toLowerCase().split(' ')
     const nextWords = nextSpeech.toLowerCase().split(' ')
@@ -43,7 +45,12 @@ class Dictaphone extends Component {
     nextWords.forEach((nextWord, i) => {
       if (lastWords[i] === nextWord) return
       const wordIndex = words.indexOf(nextWord)
-      if (wordIndex !== -1 && channel) channel.publish(props.words[wordIndex])
+      if (wordIndex !== -1) {
+        const word = props.words[wordIndex]
+        const { name } = word
+        dispatch(actions.addLog({ name }))
+        if (channel) channel.publish(word)
+      }
     })
 
     if (resetSpeech) resetSpeech()

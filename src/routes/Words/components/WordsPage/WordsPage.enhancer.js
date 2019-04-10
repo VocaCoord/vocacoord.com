@@ -10,16 +10,10 @@ import { UserIsAuthenticated } from 'utils/router'
 import styles from './WordsPage.styles'
 
 export default compose(
-  // Set component display name (more clear in dev/error tools)
   setDisplayName('EnhancedWordsPage'),
-  // redirect to /login if user is not logged in
   UserIsAuthenticated,
-  // Map auth uid from state to props
   connect(({ firebase: { auth: { uid } } }) => ({ uid })),
-  // Wait for uid to exist before going further
   spinnerWhileLoading(['uid']),
-  // Create listeners based on current users UID
-  // This should also be rewritten in conjunction with addWordbank in WordbanksPage.enhancer
   firestoreConnect(
     ({
       params,
@@ -31,33 +25,28 @@ export default compose(
       const where = [['createdBy', '==', uid]]
       if (wordbankId !== null) where.push(['wordbankId', '==', wordbankId])
       return [
-        // Listener for words the current user created
         { collection: 'words', where },
         { collection: 'classrooms', where }
       ]
     }
   ),
-  // Map words from state to props
   connect(({ firestore: { ordered: { words, classrooms } } }) => ({
     words,
     classrooms
   })),
-  // Show loading spinner while words are loading
   spinnerWhileLoading(['words', 'classrooms']),
-  // Add props.router
   withRouter,
-  // Add props.showError and props.showSuccess
   withNotifications,
-  // Add state and state handlers as props
   withStateHandlers(
-    // Setup initial state
     ({
       initialAddDialogOpen = false,
       initialEditDialogOpen = false,
+      initialLogsDialogOpen = false,
       history: { location: { state: { wordbankName = undefined } = {} } = {} }
     }) => ({
       addDialogOpen: initialAddDialogOpen,
       editDialogOpen: initialEditDialogOpen,
+      logsDialogOpen: initialLogsDialogOpen,
       selected: {
         name: '',
         definition: '',
@@ -65,7 +54,6 @@ export default compose(
       },
       wordbankName
     }),
-    // Add state handlers as props
     {
       toggleAddDialog: ({ addDialogOpen }) => () => ({
         addDialogOpen: !addDialogOpen
@@ -73,10 +61,12 @@ export default compose(
       toggleEditDialog: ({ editDialogOpen }) => word => ({
         editDialogOpen: !editDialogOpen,
         selected: { ...word }
+      }),
+      toggleLogsDialog: ({ logsDialogOpen }) => () => ({
+        logsDialogOpen: !logsDialogOpen
       })
     }
   ),
-  // Add handlers as props
   withHandlers({
     addWord: props => newInstance => {
       const {
@@ -137,6 +127,5 @@ export default compose(
         })
     }
   }),
-  // Add styles as props.classes
   withStyles(styles)
 )

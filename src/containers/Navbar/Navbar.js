@@ -50,15 +50,15 @@ export const Navbar = ({
 )
 
 Navbar.propTypes = {
-  classes: PropTypes.object.isRequired, // from enhancer (withStyles)
-  displayName: PropTypes.string, // from enhancer (flattenProps - profile)
-  avatarUrl: PropTypes.string, // from enhancer (flattenProps - profile)
-  authExists: PropTypes.bool, // from enhancer (withProps - auth)
-  goToAccount: PropTypes.func.isRequired, // from enhancer (withHandlers - router)
-  handleLogout: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  closeAccountMenu: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  handleMenu: PropTypes.func.isRequired, // from enhancer (withHandlers - firebase)
-  anchorEl: PropTypes.object // from enhancer (withStateHandlers - handleMenu)
+  classes: PropTypes.object.isRequired,
+  displayName: PropTypes.string,
+  avatarUrl: PropTypes.string,
+  authExists: PropTypes.bool,
+  goToAccount: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  closeAccountMenu: PropTypes.func.isRequired,
+  handleMenu: PropTypes.func.isRequired,
+  anchorEl: PropTypes.object
 }
 
 export default Navbar

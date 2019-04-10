@@ -51,7 +51,7 @@ const enhance = compose(
     ({ notifications: { allIds, byId } }) => ({ allIds, byId }),
     actions
   ),
-  branch(props => !size(props.allIds), renderNothing), // only render if notifications exist
+  branch(props => !size(props.allIds), renderNothing),
   withStyles(styles)
 )
 

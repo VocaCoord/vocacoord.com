@@ -8,13 +8,10 @@ import './index.css'
 
 import App from './containers/App'
 
-// Window Variables
-// ------------------------------------
 window.version = version
 window.env = env
 initScripts()
-// Store Initialization
-// ------------------------------------
+
 const initialState = window.___INITIAL_STATE__ || {
   firebase: { authError: null }
 }

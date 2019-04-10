@@ -11,33 +11,21 @@ import { UserIsAuthenticated } from 'utils/router'
 import styles from './WordbanksPage.styles'
 
 export default compose(
-  // Set component display name (more clear in dev/error tools)
   setDisplayName('EnhancedWordbanksPage'),
-  // redirect to /login if user is not logged in
   UserIsAuthenticated,
-  // Map auth uid from state to props
   connect(({ firebase: { auth: { uid } } }) => ({ uid })),
-  // Wait for uid to exist before going further
   spinnerWhileLoading(['uid']),
-  // Create listeners based on current users UID
   firestoreConnect(({ params, uid }) => [
-    // Listener for wordbanks the current user created
     {
       collection: 'wordbanks',
       where: ['createdBy', '==', uid]
     }
   ]),
-  // Map wordbanks from state to props
   connect(({ firestore: { ordered: { wordbanks } } }) => ({ wordbanks })),
-  // Show loading spinner while wordbanks are loading
   spinnerWhileLoading(['wordbanks']),
-  // Add props.router
   withRouter,
-  // Add props.showError and props.showSuccess
   withNotifications,
-  // Add state and state handlers as props
   withStateHandlers(
-    // Setup initial state
     ({ initialAddDialogOpen = false, initialEditDialogOpen = false }) => ({
       addDialogOpen: initialAddDialogOpen,
       editDialogOpen: initialEditDialogOpen,
@@ -46,7 +34,6 @@ export default compose(
         definition: ''
       }
     }),
-    // Add state handlers as props
     {
       toggleAddDialog: ({ addDialogOpen }) => () => ({
         addDialogOpen: !addDialogOpen
@@ -57,9 +44,7 @@ export default compose(
       })
     }
   ),
-  // Add handlers as props
   withHandlers({
-    // this should be rewritten using firebase (cloud) functions
     addWordbank: props => async newInstance => {
       const { firestore, uid, showError, showSuccess, toggleAddDialog } = props
       if (!uid) return showError('You must be logged in to create a wordbank')
@@ -143,6 +128,5 @@ export default compose(
     goToWords: ({ history }) => ({ id: wordbankId, name: wordbankName }) =>
       history.push(`${WORDBANKS_PATH}/${wordbankId}`, { wordbankName })
   }),
-  // Add styles as props.classes
   withStyles(styles)
 )

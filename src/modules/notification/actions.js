@@ -4,7 +4,7 @@ import {
   NOTIFICATION_CLEAR
 } from './actionTypes'
 
-const defaultDismissTime = 2500 // 2.5 seconds
+const defaultDismissTime = 2500
 
 /**
  * Publish a notification. if `dismissAfter` is set, the notification will be
@@ -16,7 +16,6 @@ const defaultDismissTime = 2500 // 2.5 seconds
  */
 export function showNotification(notif) {
   const payload = Object.assign({}, notif)
-  // Set default id to now if none provided
   if (!payload.id) {
     payload.id = Date.now()
   }
