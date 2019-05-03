@@ -9,7 +9,7 @@
 
 # React App
 build
-src/config.js
+src/config.dev.js
 .env
 
 # Functions
