@@ -20,14 +20,14 @@ const Home = ({ classes }) => (
             <div className="hero-cta">
               <a
                 className="button button-shadow"
-                href="https://github.com/MikeynJerry/VocaCoord"
+                href="https://github.com/VocaCoord"
                 target="_blank"
                 rel="noopener noreferrer">
                 Learn more
               </a>
               <a
                 className="button button-primary button-shadow"
-                href="https://github.com/MikeynJerry/VocaCoord/releases/tag/v0.1.3"
+                href="https://github.com/VocaCoord/vocacoord/releases/tag/v1.0.1"
                 target="_blank"
                 rel="noopener noreferrer">
                 Early access
