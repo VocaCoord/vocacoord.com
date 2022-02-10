@@ -72,7 +72,7 @@
     "jest": "^23.6.0",
     "jest-pnp-resolver": "1.0.1",
     "jest-resolve": "23.6.0",
-    "node-sass": "^4.10.0",
+    "node-sass": "^7.0.0",
     "prettier": "^1.15.2",
     "react-scripts": "2.1.1",
     "react-test-renderer": "^16.6.3"
